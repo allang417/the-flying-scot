@@ -299,9 +299,17 @@
       contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        const name = document.getElementById('contactName').value;
-        const email = document.getElementById('contactEmail').value;
-        const message = document.getElementById('contactMessage').value;
+        // This automatically pulls input fields based on their "name" or "id" attributes safely
+        const formData = new FormData(contactForm);
+        const name = formData.get('name') || document.getElementById('contactName')?.value || '';
+        const email = formData.get('email') || document.getElementById('contactEmail')?.value || '';
+        const message = formData.get('message') || document.getElementById('contactMessage')?.value || '';
+
+        // Verification safety check
+        if (!name || !email || !message) {
+          alert('Please fill out all fields before submitting.');
+          return;
+        }
 
         try {
           const response = await fetch('/api/contact', {
@@ -310,20 +318,16 @@
             body: JSON.stringify({ name, email, message })
           });
           
-          if (!response.ok) {
-            throw new Error('Server returned an error status');
-          }
-          
           const result = await response.json();
           
           if (result.success) {
             alert('Your message has been sent Successfully!');
             contactForm.reset(); 
           } else {
-            alert('Failed to send message.');
+            alert('Failed to send message: ' + (result.error || 'Server error'));
           }
         } catch (error) {
-          console.error(error);
+          console.error('Frontend Error:', error);
           alert('Could not connect to the database server.');
         }
       });
