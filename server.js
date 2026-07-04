@@ -1,11 +1,15 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const { Sequelize, DataTypes } = require('sequelize');
-const nodemailer = require('nodemailer'); // Imports the email tool
+const nodemailer = require('nodemailer'); 
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Serve static frontend files (index.html, style.css, assets folder) directly
+app.use(express.static(__dirname));
 
 // 1. Create the database file automatically
 const sequelize = new Sequelize({
@@ -28,28 +32,26 @@ const Subscriber = sequelize.define('Subscriber', {
 // Generate database tables automatically
 sequelize.sync();
 
-// 2. Set up the Email Sender (Change credentials to your actual email provider details) go to app settings and find APP Passwords to generate a 16 character password then paste in PASS
+// 2. Set up the Email Sender
 const emailTransporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com', // If using Gmail. Change if using Outlook/GoDaddy etc.
+  host: 'smtp.gmail.com', 
   port: 587,
   secure: false, 
   auth: {
-    user: 'admin@theflyingscot.co.nz', // Your business email address
-    pass: 'YOUR_EMAIL_APP_PASSWORD'     // Your real email app password
+    user: 'admin@theflyingscot.co.nz', 
+    pass: 'YOUR_EMAIL_APP_PASSWORD'     // Keep your real app password pasted here
   }
 });
 
-// --- UPDATED PATHS TO INCLUDE EMAIL DISPATCH ---
+// --- API ENDPOINTS ---
 
 // Receive Contact Form Details
 app.post('/api/contact', async (req, res) => {
   try {
     const { name, email, message } = req.body;
     
-    // Save to local database
     await ContactMessage.create({ name, email, message });
 
-    // Send copy to business email
     const mailOptions = {
       from: '"The Flying SCOT Website" <admin@theflyingscot.co.nz>',
       to: 'admin@theflyingscot.co.nz', 
@@ -75,10 +77,8 @@ app.post('/api/subscribe', async (req, res) => {
   try {
     const { email } = req.body;
 
-    // Save to local database
     await Subscriber.create({ email });
 
-    // Send copy to business email
     const mailOptions = {
       from: '"The Flying SCOT Website" <admin@theflyingscot.co.nz>',
       to: 'admin@theflyingscot.co.nz',
@@ -97,4 +97,11 @@ app.post('/api/subscribe', async (req, res) => {
   }
 });
 
-app.listen(5000, () => console.log('Database & Email server is ready on port 5000!'));
+// Root Route: Explicitly serve the index.html homepage when visiting the root URL
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Dynamic Port configuration required by Render (falls back to 5000 locally)
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Database & Email server is ready on port ${PORT}!`));
