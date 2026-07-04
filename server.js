@@ -8,49 +8,48 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve static frontend files (index.html, style.css, assets folder) directly
 app.use(express.static(__dirname));
 
-// 1. Create the database file automatically
+// Ensure the database is created cleanly in the current working directory
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: './database.sqlite'
+  storage: path.join(__dirname, 'database.sqlite'),
+  logging: console.log // Logs all database actions to your Render terminal
 });
 
-// Map out data to save for contact messages
 const ContactMessage = sequelize.define('ContactMessage', {
   name: { type: DataTypes.STRING, allowNull: false },
   email: { type: DataTypes.STRING, allowNull: false },
   message: { type: DataTypes.TEXT, allowNull: false }
 });
 
-// Map out data to save for newsletter signups
 const Subscriber = sequelize.define('Subscriber', {
   email: { type: DataTypes.STRING, allowNull: false, unique: true }
 });
 
-// Generate database tables automatically
-sequelize.sync();
+// Force database synchronization on startup
+sequelize.sync({ alter: true })
+  .then(() => console.log('Database tables successfully synchronized.'))
+  .catch(err => console.error('Database sync error:', err));
 
-// 2. Set up the Email Sender
 const emailTransporter = nodemailer.createTransport({
   host: 'smtp.gmail.com', 
   port: 587,
   secure: false, 
   auth: {
     user: 'admin@theflyingscot.co.nz', 
-    pass: 'YOUR_EMAIL_APP_PASSWORD'     // Keep your real app password pasted here
+    pass: 'YOUR_EMAIL_APP_PASSWORD' // Double check your 16-character Gmail App Password here
   }
 });
-
-// --- API ENDPOINTS ---
 
 // Receive Contact Form Details
 app.post('/api/contact', async (req, res) => {
   try {
     const { name, email, message } = req.body;
+    console.log('Received contact submission:', { name, email });
     
-    await ContactMessage.create({ name, email, message });
+    const newMessage = await ContactMessage.create({ name, email, message });
+    console.log('Saved to database:', newMessage.id);
 
     const mailOptions = {
       from: '"The Flying SCOT Website" <admin@theflyingscot.co.nz>',
@@ -64,11 +63,12 @@ app.post('/api/contact', async (req, res) => {
       `
     };
     await emailTransporter.sendMail(mailOptions);
+    console.log('Contact email sent successfully.');
 
     res.json({ success: true });
   } catch (err) {
-    console.error(err);
-    res.json({ success: false });
+    console.error('Backend Contact Error Detail:', err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
@@ -76,8 +76,10 @@ app.post('/api/contact', async (req, res) => {
 app.post('/api/subscribe', async (req, res) => {
   try {
     const { email } = req.body;
+    console.log('Received subscription request for:', email);
 
-    await Subscriber.create({ email });
+    const newSub = await Subscriber.create({ email });
+    console.log('Saved subscriber to database:', newSub.id);
 
     const mailOptions = {
       from: '"The Flying SCOT Website" <admin@theflyingscot.co.nz>',
@@ -89,19 +91,18 @@ app.post('/api/subscribe', async (req, res) => {
       `
     };
     await emailTransporter.sendMail(mailOptions);
+    console.log('Subscription email sent successfully.');
 
     res.json({ success: true });
   } catch (err) {
-    console.error(err);
-    res.json({ success: false });
+    console.error('Backend Subscribe Error Detail:', err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
-// Root Route: Explicitly serve the index.html homepage when visiting the root URL
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Dynamic Port configuration required by Render (falls back to 5000 locally)
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Database & Email server is ready on port ${PORT}!`));
