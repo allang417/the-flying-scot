@@ -46,10 +46,8 @@ const emailTransporter = nodemailer.createTransport({
 app.post('/api/contact', async (req, res) => {
   try {
     const { name, email, message } = req.body;
-    console.log('Received contact submission:', { name, email });
     
-    const newMessage = await ContactMessage.create({ name, email, message });
-    console.log('Saved to database:', newMessage.id);
+    await ContactMessage.create({ name, email, message });
 
     const mailOptions = {
       from: '"The Flying SCOT Website" <admin@theflyingscot.co.nz>',
@@ -63,12 +61,11 @@ app.post('/api/contact', async (req, res) => {
       `
     };
     await emailTransporter.sendMail(mailOptions);
-    console.log('Contact email sent successfully.');
 
     res.json({ success: true });
   } catch (err) {
     console.error('Backend Contact Error Detail:', err);
-    res.status(500).json({ success: false, error: err.message });
+    res.json({ success: false, error: 'Database or mail delivery failed.' });
   }
 });
 
@@ -76,10 +73,8 @@ app.post('/api/contact', async (req, res) => {
 app.post('/api/subscribe', async (req, res) => {
   try {
     const { email } = req.body;
-    console.log('Received subscription request for:', email);
 
-    const newSub = await Subscriber.create({ email });
-    console.log('Saved subscriber to database:', newSub.id);
+    await Subscriber.create({ email });
 
     const mailOptions = {
       from: '"The Flying SCOT Website" <admin@theflyingscot.co.nz>',
@@ -91,12 +86,17 @@ app.post('/api/subscribe', async (req, res) => {
       `
     };
     await emailTransporter.sendMail(mailOptions);
-    console.log('Subscription email sent successfully.');
 
     res.json({ success: true });
   } catch (err) {
     console.error('Backend Subscribe Error Detail:', err);
-    res.status(500).json({ success: false, error: err.message });
+    
+    // Check if the error is due to a duplicate email address
+    if (err.name === 'SequelizeUniqueConstraintError') {
+      return res.json({ success: false, error: 'already_subscribed' });
+    }
+    
+    res.json({ success: false, error: 'Server error' });
   }
 });
 

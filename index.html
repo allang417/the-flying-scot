@@ -348,13 +348,16 @@
             throw new Error('Server returned an error status');
           }
           
-          const result = await response.json();
+const result = await response.json();
           
           if (result.success) {
             alert(`✉️ Added ${email} to our database subscriber list!`);
             emailInput.value = ''; 
+          } else if (result.error === 'already_subscribed') {
+            alert('This email address is already subscribed!');
+            emailInput.value = '';
           } else {
-            alert('Subscription failed.');
+            alert('Subscription failed. Please try again.');
           }
         } catch (error) {
           console.error(error);
