@@ -293,7 +293,7 @@
       });
     });
 
-    // Handler for the "Send us a message" Form
+// Handler for the "Send us a message" Form
     const contactForm = document.getElementById('sendMessageForm');
     if (contactForm) {
       contactForm.addEventListener('submit', async (e) => {
@@ -309,13 +309,21 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email, message })
           });
+          
+          if (!response.ok) {
+            throw new Error('Server returned an error status');
+          }
+          
           const result = await response.json();
           
           if (result.success) {
             alert('Your message has been sent Successfully!');
             contactForm.reset(); 
+          } else {
+            alert('Failed to send message.');
           }
         } catch (error) {
+          console.error(error);
           alert('Could not connect to the database server.');
         }
       });
@@ -335,13 +343,21 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email })
           });
+          
+          if (!response.ok) {
+            throw new Error('Server returned an error status');
+          }
+          
           const result = await response.json();
           
           if (result.success) {
             alert(`✉️ Added ${email} to our database subscriber list!`);
             emailInput.value = ''; 
+          } else {
+            alert('Subscription failed.');
           }
         } catch (error) {
+          console.error(error);
           alert('Could not connect to the database server.');
         }
       });
