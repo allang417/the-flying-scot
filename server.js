@@ -32,13 +32,18 @@ sequelize.sync({ alter: true })
   .then(() => console.log('Database tables successfully synchronized.'))
   .catch(err => console.error('Database sync error:', err));
 
+// Updated Email Sender forcing standard IPv4 to fix the ENETUNREACH network error
 const emailTransporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com', 
+  host: '74.125.142.108', // Forces the direct IPv4 address for smtp.gmail.com
   port: 587,
   secure: false, 
   auth: {
     user: 'admin@theflyingscot.co.nz', 
-    pass: 'YOUR_EMAIL_APP_PASSWORD' // Double check your 16-character Gmail App Password here
+    pass: 'YOUR_EMAIL_APP_PASSWORD'     // Make sure your real 16-character app password is here
+  },
+  tls: {
+    rejectUnauthorized: false,
+    servername: 'smtp.gmail.com'        // Ensures SSL certificate matches Gmail
   }
 });
 
