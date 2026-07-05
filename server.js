@@ -39,7 +39,7 @@ const emailTransporter = nodemailer.createTransport({
   secure: true,                  // True for port 465
   auth: {
     user: 'admin@theflyingscot.co.nz', 
-    pass: 'YOUR_16_CHARACTER_APP_PASSWORD' // Make sure your real 16-character app password is here
+    pass: 'hlhs vqit qiak hdbh' // Make sure your real 16-character app password is here
   },
   tls: {
     rejectUnauthorized: false,
