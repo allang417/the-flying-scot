@@ -22,6 +22,7 @@
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "nodemailer": "^9.0.1",
+    "resend": "^6.17.1",
     "sequelize": "^6.37.8",
     "sqlite": "^5.1.1",
     "sqlite3": "^6.0.1"

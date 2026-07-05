@@ -2,13 +2,16 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const { Sequelize, DataTypes } = require('sequelize');
-const nodemailer = require('nodemailer'); 
+const { Resend } = require('resend'); // Fixed: Correct destructuring for Resend
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 app.use(express.static(__dirname));
+
+// Initialize Resend with your API Key
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Ensure the database is created cleanly in the current working directory
 const sequelize = new Sequelize({
@@ -32,21 +35,6 @@ sequelize.sync({ alter: true })
   .then(() => console.log('Database tables successfully synchronized.'))
   .catch(err => console.error('Database sync error:', err));
 
-// Fixed Email Transporter forcing IPv4 to prevent Render IPv6 network crashes
-const emailTransporter = nodemailer.createTransport({
-  host: '173.194.45.109',        // Direct IPv4 address for smtp.gmail.com
-  port: 465,                     // Secure SSL port
-  secure: true,                  // True for port 465
-  auth: {
-    user: 'admin@theflyingscot.co.nz', 
-    pass: 'hlhs vqit qiak hdbh' // Make sure your real 16-character app password is here
-  },
-  tls: {
-    rejectUnauthorized: false,
-    servername: 'smtp.gmail.com'  // Tells Google which SSL certificate to verify against
-  }
-});
-
 // Receive Contact Form Details
 app.post('/api/contact', async (req, res) => {
   try {
@@ -54,8 +42,9 @@ app.post('/api/contact', async (req, res) => {
     
     await ContactMessage.create({ name, email, message });
 
-    const mailOptions = {
-      from: '"The Flying SCOT Website" <admin@theflyingscot.co.nz>',
+    // Fixed: Swapped out old emailTransporter for Resend HTTP format
+    await resend.emails.send({
+      from: 'Website Inquiry <onboarding@resend.dev>', // Free tier default sandbox sender
       to: 'admin@theflyingscot.co.nz', 
       subject: 'New Website Contact Form Submission!',
       html: `
@@ -64,8 +53,7 @@ app.post('/api/contact', async (req, res) => {
         <p><strong>Customer Email:</strong> ${email}</p>
         <p><strong>Message:</strong> ${message}</p>
       `
-    };
-    await emailTransporter.sendMail(mailOptions);
+    });
 
     res.json({ success: true });
   } catch (err) {
@@ -88,11 +76,11 @@ app.post('/api/subscribe', async (req, res) => {
       defaults: { email: email.toLowerCase().trim() }
     });
 
-    // Send your notification email out next
-    await emailTransporter.sendMail({
-      from: '"The Flying Scot Website" <admin@theflyingscot.co.nz>',
+    // Sent via Resend API
+    await resend.emails.send({
+      from: 'Newsletter Alert <onboarding@resend.dev>',
       to: 'admin@theflyingscot.co.nz',
-      subject: 'New Newsletter Subscriber!',
+      subject: 'New Website Notification!',
       text: `Great news! A user has subscribed to your newsletter.\n\nEmail: ${email}`
     });
 
@@ -107,10 +95,6 @@ app.post('/api/subscribe', async (req, res) => {
     res.status(500).json({ success: false, error: 'Database processing error.' });
   }
 });
-// Secure route to view contact messages
-
-
-// Secure route to view newsletter subscribers
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
