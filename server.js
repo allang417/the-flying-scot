@@ -38,8 +38,8 @@ const emailTransporter = nodemailer.createTransport({
   port: 465,               // Secure SSL port to bypass connection timeouts
   secure: true,            // Required for port 465
   auth: {
-    user: 'admin@theflyingscot.co.nz',  // Your Gmail / Workspace email address
-    pass: 'abcd efgh ijkl mnop'         // PASTE YOUR 16-CHARACTER APP PASSWORD HERE (include spaces)
+    user: 'admin@theflyingscot.co.nz',  // Gmail / Workspace email address
+    pass: 'abcd efgh ijkl mnop'         // PASTE 16-CHARACTER APP PASSWORD HERE (include spaces)
   },
   tls: {
     rejectUnauthorized: false,
