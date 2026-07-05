@@ -32,21 +32,19 @@ sequelize.sync({ alter: true })
   .then(() => console.log('Database tables successfully synchronized.'))
   .catch(err => console.error('Database sync error:', err));
 
-// Fixed Email Transporter using official hostnames with explicit IPv4 DNS forcing
+// Fixed Email Transporter forcing IPv4 to prevent Render IPv6 network crashes
 const emailTransporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',         // Switched back to official host from static IP
+  host: '173.194.45.109',        // Direct IPv4 address for smtp.gmail.com
   port: 465,                     // Secure SSL port
   secure: true,                  // True for port 465
   auth: {
     user: 'admin@theflyingscot.co.nz', 
-    pass: 'hlhs vqit qiak hdbh' // Ensure your generated app password is paste here
+    pass: 'YOUR_16_CHARACTER_APP_PASSWORD' // Make sure your real 16-character app password is here
   },
   tls: {
-    rejectUnauthorized: false
-  },
-  // Forces Node.js to resolve the domain via IPv4 only, preventing the 2-minute Render network hang
-  connectionTimeout: 10000,      // Tells the server to stop waiting after 10 seconds instead of 2 minutes
-  greetingTimeout: 10000
+    rejectUnauthorized: false,
+    servername: 'smtp.gmail.com'  // Tells Google which SSL certificate to verify against
+  }
 });
 
 // Receive Contact Form Details
