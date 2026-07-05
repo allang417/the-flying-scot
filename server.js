@@ -105,24 +105,10 @@ app.post('/api/subscribe', async (req, res) => {
   }
 });
 // Secure route to view contact messages
-app.get('/api/view-messages', async (req, res) => {
-  try {
-    const messages = await ContactMessage.findAll();
-    res.json(messages);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+
 
 // Secure route to view newsletter subscribers
-app.get('/api/view-subscribers', async (req, res) => {
-  try {
-    const subscribers = await Subscriber.findAll();
-    res.json(subscribers);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
