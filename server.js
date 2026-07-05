@@ -74,34 +74,37 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// Receive Newsletter Subscriptions
+// Updated Subscriber Route that handles duplicate emails gracefully
 app.post('/api/subscribe', async (req, res) => {
   try {
     const { email } = req.body;
-
-    await Subscriber.create({ email });
-
-    const mailOptions = {
-      from: '"The Flying SCOT Website" <admin@theflyingscot.co.nz>',
-      to: 'admin@theflyingscot.co.nz',
-      subject: 'New Newsletter Subscriber Joined!',
-      html: `
-        <h3>Good news! A new user joined the clan mailing list:</h3>
-        <p><strong>Email Address:</strong> ${email}</p>
-      `
-    };
-    await emailTransporter.sendMail(mailOptions);
-
-    res.json({ success: true });
-  } catch (err) {
-    console.error('Backend Subscribe Error Detail:', err);
-    
-    // Check if the error is due to a duplicate email address
-    if (err.name === 'SequelizeUniqueConstraintError') {
-      return res.json({ success: false, error: 'already_subscribed' });
+    if (!email) {
+      return res.status(400).json({ success: false, error: 'Email is required' });
     }
-    
-    res.json({ success: false, error: 'Server error' });
+
+    // Instead of forcing a brand new entry, find or update the existing subscriber
+    const [subscriber, created] = await Subscriber.findOrCreate({
+      where: { email: email.toLowerCase().trim() },
+      defaults: { email: email.toLowerCase().trim() }
+    });
+
+    // Send your notification email out next
+    await emailTransporter.sendMail({
+      from: '"The Flying Scot Website" <admin@theflyingscot.co.nz>',
+      to: 'admin@theflyingscot.co.nz',
+      subject: 'New Newsletter Subscriber!',
+      text: `Great news! A user has subscribed to your newsletter.\n\nEmail: ${email}`
+    });
+
+    if (!created) {
+      return res.json({ success: true, message: 'Welcome back! You were already on our list.' });
+    }
+
+    res.json({ success: true, message: 'Thank you for subscribing!' });
+
+  } catch (error) {
+    console.error('Backend Subscribe Error Detail:', error);
+    res.status(500).json({ success: false, error: 'Database processing error.' });
   }
 });
 // Secure route to view contact messages
