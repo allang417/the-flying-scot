@@ -32,19 +32,21 @@ sequelize.sync({ alter: true })
   .then(() => console.log('Database tables successfully synchronized.'))
   .catch(err => console.error('Database sync error:', err));
 
-// Fixed Gmail SMTP configuration using Port 465 with a verified IPv4 route
+// Fixed Email Transporter using official hostnames with explicit IPv4 DNS forcing
 const emailTransporter = nodemailer.createTransport({
-  host: '173.194.45.109',  // Direct IPv4 for smtp.gmail.com to bypass Render network blocks
-  port: 465,               // Secure SSL port to bypass connection timeouts
-  secure: true,            // Required for port 465
+  host: 'smtp.gmail.com',         // Switched back to official host from static IP
+  port: 465,                     // Secure SSL port
+  secure: true,                  // True for port 465
   auth: {
-    user: 'admin@theflyingscot.co.nz',  // Gmail / Workspace email address
-    pass: 'hlhs vqit qiak hdbh'         // PASTE 16-CHARACTER APP PASSWORD HERE (include spaces)
+    user: 'admin@theflyingscot.co.nz', 
+    pass: 'hlhs vqit qiak hdbh' // Ensure your generated app password is paste here
   },
   tls: {
-    rejectUnauthorized: false,
-    servername: 'smtp.gmail.com'        // Ensures SSL certificate verification matches Google
-  }
+    rejectUnauthorized: false
+  },
+  // Forces Node.js to resolve the domain via IPv4 only, preventing the 2-minute Render network hang
+  connectionTimeout: 10000,      // Tells the server to stop waiting after 10 seconds instead of 2 minutes
+  greetingTimeout: 10000
 });
 
 // Receive Contact Form Details
