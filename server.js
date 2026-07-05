@@ -25,7 +25,7 @@ const ContactMessage = sequelize.define('ContactMessage', {
 
 const Subscriber = sequelize.define('Subscriber', {
   email: { type: DataTypes.STRING, allowNull: false, unique: true }
-});
+});  
 
 // Force database synchronization on startup
 sequelize.sync({ alter: true })
@@ -39,7 +39,7 @@ const emailTransporter = nodemailer.createTransport({
   secure: true,            // Required for port 465
   auth: {
     user: 'admin@theflyingscot.co.nz',  // Gmail / Workspace email address
-    pass: 'abcd efgh ijkl mnop'         // PASTE 16-CHARACTER APP PASSWORD HERE (include spaces)
+    pass: 'hlhs vqit qiak hdbh'         // PASTE 16-CHARACTER APP PASSWORD HERE (include spaces)
   },
   tls: {
     rejectUnauthorized: false,
