@@ -23,7 +23,7 @@ app.post('/api/contact', async (req, res) => {
 
     // Directly dispatch the inquiry to your inbox via Resend
     await resend.emails.send({
-      from: 'Website Inquiry <onboarding@resend.dev>', // Change to your domain email once CNAMEs verify
+      from: 'Website Inquiry <info@theflyingscot.co.nz>', // Change to your domain email once CNAMEs verify
       to: 'admin@theflyingscot.co.nz', 
       subject: 'New Website Contact Form Submission!',
       html: `
@@ -53,7 +53,7 @@ app.post('/api/subscribe', async (req, res) => {
 
     // Send the subscriber alert straight to your inbox
     await resend.emails.send({
-      from: 'Newsletter Alert <onboarding@resend.dev>', // Change to your domain email once CNAMEs verify
+      from: 'Newsletter Alert <newsletter@theflyingscot.co.nz>', // Change to your domain email once CNAMEs verify
       to: 'admin@theflyingscot.co.nz',
       subject: 'New Website Notification!',
       text: `Great news! A user has subscribed to your newsletter.\n\nEmail: ${email}`
