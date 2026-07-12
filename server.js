@@ -1,8 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const { Sequelize, DataTypes } = require('sequelize');
-const { Resend } = require('resend'); // Fixed: Correct destructuring for Resend
+const { Resend } = require('resend'); // Keep Resend for HTTP email delivery
 
 const app = express();
 app.use(cors());
@@ -13,38 +12,18 @@ app.use(express.static(__dirname));
 // Initialize Resend with your API Key
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Ensure the database is created cleanly in the current working directory
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: path.join(__dirname, 'database.sqlite'),
-  logging: console.log // Logs all database actions to your Render terminal
-});
+// NOTE: All Sequelize database configurations, models, and sync lines have been completely removed.
 
-const ContactMessage = sequelize.define('ContactMessage', {
-  name: { type: DataTypes.STRING, allowNull: false },
-  email: { type: DataTypes.STRING, allowNull: false },
-  message: { type: DataTypes.TEXT, allowNull: false }
-});
-
-const Subscriber = sequelize.define('Subscriber', {
-  email: { type: DataTypes.STRING, allowNull: false, unique: true }
-});  
-
-// Force database synchronization on startup
-sequelize.sync({ alter: true })
-  .then(() => console.log('Database tables successfully synchronized.'))
-  .catch(err => console.error('Database sync error:', err));
-
-// Receive Contact Form Details
+// Receive Contact Form Details (Email-Only)
 app.post('/api/contact', async (req, res) => {
   try {
     const { name, email, message } = req.body;
     
-    await ContactMessage.create({ name, email, message });
+    // Database save line removed completely. 
 
-    // Fixed: Swapped out old emailTransporter for Resend HTTP format
+    // Directly dispatch the inquiry to your inbox via Resend
     await resend.emails.send({
-      from: 'Website Inquiry <onboarding@resend.dev>', // Free tier default sandbox sender
+      from: 'Website Inquiry <onboarding@resend.dev>', // Change to your domain email once CNAMEs verify
       to: 'admin@theflyingscot.co.nz', 
       subject: 'New Website Contact Form Submission!',
       html: `
@@ -58,11 +37,11 @@ app.post('/api/contact', async (req, res) => {
     res.json({ success: true });
   } catch (err) {
     console.error('Backend Contact Error Detail:', err);
-    res.json({ success: false, error: 'Database or mail delivery failed.' });
+    res.json({ success: false, error: 'Mail delivery failed.' });
   }
 });
 
-// Updated Subscriber Route that handles duplicate emails gracefully
+// Newsletter Subscriber Route (Email-Only)
 app.post('/api/subscribe', async (req, res) => {
   try {
     const { email } = req.body;
@@ -70,29 +49,23 @@ app.post('/api/subscribe', async (req, res) => {
       return res.status(400).json({ success: false, error: 'Email is required' });
     }
 
-    // Instead of forcing a brand new entry, find or update the existing subscriber
-    const [subscriber, created] = await Subscriber.findOrCreate({
-      where: { email: email.toLowerCase().trim() },
-      defaults: { email: email.toLowerCase().trim() }
-    });
+    // Database lookup and unique checks removed completely.
 
-    // Sent via Resend API
+    // Send the subscriber alert straight to your inbox
     await resend.emails.send({
-      from: 'Newsletter Alert <onboarding@resend.dev>',
+      from: 'Newsletter Alert <onboarding@resend.dev>', // Change to your domain email once CNAMEs verify
       to: 'admin@theflyingscot.co.nz',
       subject: 'New Website Notification!',
       text: `Great news! A user has subscribed to your newsletter.\n\nEmail: ${email}`
     });
 
-    if (!created) {
-      return res.json({ success: true, message: 'Welcome back! You were already on our list.' });
-    }
-
+    // Because we are no longer checking a database for duplicates, 
+    // it will simply say thank you every time someone signs up.
     res.json({ success: true, message: 'Thank you for subscribing!' });
 
   } catch (error) {
     console.error('Backend Subscribe Error Detail:', error);
-    res.status(500).json({ success: false, error: 'Database processing error.' });
+    res.status(500).json({ success: false, error: 'Email processing error.' });
   }
 });
 
@@ -101,4 +74,4 @@ app.get('/', (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Database & Email server is ready on port ${PORT}!`));
+app.listen(PORT, () => console.log(`Email-only server is ready on port ${PORT}!`));
