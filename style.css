@@ -535,6 +535,198 @@ section {
   }
 }
 
+/* ==========================================
+   CAROUSEL LAYOUT STYLES
+   ========================================== */
+
+/* Centers the section and balances padding */
+.offers-section {
+  text-align: center;
+  padding: 5rem 0;
+  width: 100%;
+}
+
+/* Headings inherit global styles natively */
+.offers-section h2 {
+  margin-bottom: 3rem;
+}
+
+/* Carousel Wrapper Setup */
+.carousel-wrapper {
+  position: relative;
+  max-width: 1000px; /* Binds the carousel width beautifully on desktop */
+  margin: 0 auto;
+  padding: 0 45px; /* Leaves perfect room for buttons on the sides */
+  box-sizing: border-box;
+}
+
+/* Viewport hides the overflow horizontal items */
+.carousel-viewport {
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Horizontal Track sliding mechanics */
+.carousel-track {
+  display: flex;
+  gap: 20px;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  padding: 15px 0;
+}
+
+/* Beautiful, consistent presentation cards */
+.carousel-card {
+  flex: 0 0 calc(33.333% - 14px); /* Desktop: Shows 3 perfectly uniform cards */
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid #e0d5c0;
+  text-align: center;
+}
+
+.carousel-card img {
+  width: 100%;
+  height: 200px; /* Fixed height keeps every single image visually aligned */
+  object-fit: cover;
+  display: block;
+}
+
+.carousel-card h3 {
+  margin: 0;
+  padding: 16px;
+  font-size: 1.05rem;
+  color: var(--navy);
+  font-weight: 600;
+}
+
+/* Navigation Buttons Styling */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  font-size: 24px;
+  line-height: 36px;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-btn:hover {
+  background: #f8f8f8;
+  border-color: #bbb;
+}
+
+.prev-btn { left: 0; }
+.next-btn { right: 0; }
+
+/* Responsive adjustments for Tablets and Mobile screens */
+@media (max-width: 768px) {
+  .carousel-card {
+    flex: 0 0 calc(50% - 10px); /* Tablets: Shows 2 cards */
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-wrapper {
+    padding: 0; /* Drops side padding so items maximize small screens */
+  }
+  .carousel-btn {
+    display: none; /* Emphasizes native touch swipe on mobile profiles */
+  }
+  .carousel-viewport {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .carousel-viewport::-webkit-scrollbar {
+    display: none;
+  }
+  .carousel-card {
+    flex: 0 0 75%; /* Mobile: Shows 1 card fully, with a preview of the next */
+  }
+}
+/* ==========================================
+   WEEKLY SCHEDULE ROW STYLES
+   ========================================== */
+
+.schedule-section {
+  background-color: #e9dfcd; /* Using your warm cream variant */
+  padding: 5rem 0;
+  text-align: center;
+}
+
+/* Horizontal Row Configuration */
+.weekly-timeline {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 2rem 0 3rem 0;
+  width: 100%;
+}
+
+/* Individual day card elements */
+.day-column {
+  flex: 1;
+  background: #ffffff;
+  padding: 1.5rem 0.75rem;
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid #e0d5c0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.day-name {
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.day-hours {
+  color: #4a5b5e;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Bottom centered call out text */
+.social-notice {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--crimson);
+  margin-top: 2rem;
+  text-align: center;
+}
+
+/* Responsive: Stacks vertically on mobile/tablet profiles smoothly */
+@media (max-width: 860px) {
+  .weekly-timeline {
+    flex-direction: column;
+    gap: 16px;
+    max-width: 400px;
+    margin: 2rem auto 3rem auto;
+  }
+  
+  .day-column {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    align-items: center;
+  }
+}
+
 @media (max-width: 520px) {
   .btn-primary, .btn-secondary {
     padding: 0.7rem 1.4rem;
@@ -542,9 +734,28 @@ section {
   .news-form {
     flex-direction: column;
   }
-  
   .footer-content {
     flex-direction: column;
     text-align: center;
   }
+}
+
+/* Schedule Section Social Icons Styling */
+.schedule-social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.schedule-social-links a {
+  color: var(--navy);
+  font-size: 2rem;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+}
+
+.schedule-social-links a:hover {
+  color: var(--crimson);
+  transform: scale(1.1);
 }
