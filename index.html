@@ -259,6 +259,12 @@
     // Handler for the "Send us a message" Form
     const contactForm = document.getElementById('sendMessageForm');
     if (contactForm) {
+      // Prevent Enter key from submitting the form inside the textarea box
+document.getElementById('contactMessage')?.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.stopPropagation(); // Stops the form from auto-submitting
+  }
+});
       contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(contactForm);
