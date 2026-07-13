@@ -1,5 +1,3 @@
-<!-- I still need to fix the form submission and make sure it goes to the business email and clears the form after submission, add the social media icons for the find the flying scot footer styling add the email address, add in the social media links, add google maps pin for locations and make sure the get the first bite email submission is working-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -165,7 +163,7 @@
           <input type="email" id="contactEmail" placeholder="Your Email" required>
         </div>
         <div class="form-group">
-          <input type="textarea" id="contactMessage" rows="5" placeholder="Tell us about your event or inquiry..." required></textarea>
+          <textarea id="contactMessage" rows="5" placeholder="Tell us about your event or inquiry..." required></textarea>
         </div>
         <button type="submit" class="btn-primary" style="width: 100%; border: none; cursor: pointer;">
           <i class="fas fa-paper-plane"></i> Send Message
@@ -259,12 +257,19 @@
     // Handler for the "Send us a message" Form
     const contactForm = document.getElementById('sendMessageForm');
     if (contactForm) {
-      // Prevent Enter key from submitting the form inside the textarea box
-document.getElementById('contactMessage')?.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.stopPropagation(); // Stops the form from auto-submitting
-  }
-});
+      // Force enter key to create a new line instead of form submission
+      document.getElementById('contactMessage')?.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault(); 
+          
+          const start = this.selectionStart;
+          const end = this.selectionEnd;
+          this.value = this.value.substring(0, start) + "\n" + this.value.substring(end);
+          
+          this.selectionStart = this.selectionEnd = start + 1;
+        }
+      });
+
       contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(contactForm);
@@ -346,7 +351,7 @@ document.getElementById('contactMessage')?.addEventListener('keydown', function(
   let index = 0;
 
   function updateCarousel() {
-    const cardWidth = document.querySelector('.carousel-card').offsetWidth + 20; // card size + gap
+    const cardWidth = document.querySelector('.carousel-card').offsetWidth + 20; 
     track.style.transform = `translateX(-${index * cardWidth}px)`;
   }
 
