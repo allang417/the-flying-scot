@@ -47,11 +47,10 @@ body {
 }
 
 .logo-img {
-  height: 90px;
+  height: 100px;
   width: auto;
-  max-width: 100%;
+  max-width: 180px;
   object-fit: contain;
-  border-radius: 50%; /* Keeps the circular badge perfectly round */
 }
 
 .nav-links {
@@ -660,7 +659,7 @@ section {
    ========================================== */
 
 .schedule-section {
-  background-color: #e9dfcd; /* Using your warm cream variant */
+  background-color: #e9dfcd; /* Warm cream variant */
   padding: 5rem 0;
   text-align: center;
 }
@@ -711,37 +710,7 @@ section {
   text-align: center;
 }
 
-/* Responsive: Stacks vertically on mobile/tablet profiles smoothly */
-@media (max-width: 860px) {
-  .weekly-timeline {
-    flex-direction: column;
-    gap: 16px;
-    max-width: 400px;
-    margin: 2rem auto 3rem auto;
-  }
-  
-  .day-column {
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 1rem 1.5rem;
-    align-items: center;
-  }
-}
-
-@media (max-width: 520px) {
-  .btn-primary, .btn-secondary {
-    padding: 0.7rem 1.4rem;
-  }
-  .news-form {
-    flex-direction: column;
-  }
-  .footer-content {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-/* Schedule Section Social Icons Styling */
+/* Schedule Block Interactive Social Icons */
 .schedule-social-links {
   display: flex;
   justify-content: center;
