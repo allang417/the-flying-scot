@@ -47,10 +47,11 @@ body {
 }
 
 .logo-img {
-  height: 100px;
+  height: 90px;
   width: auto;
-  max-width: 180px;
+  max-width: 100%;
   object-fit: contain;
+  border-radius: 50%; /* Keeps the circular badge perfectly round */
 }
 
 .nav-links {
