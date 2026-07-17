@@ -1,24 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Declares the character encoding for the website (supports almost all characters and symbols) -->
   <meta charset="UTF-8">
+  
+  <!-- Ensures the site scales beautifully and is responsive on mobile screens and modern displays -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  
+  <!-- A short description of the page that search engines like Google show in search results -->
   <meta name="description" content="The Flying SCOT - Authentic Scottish street food with a modern twist. Food truck serving Canterbury.">
+  
+  <!-- The title displayed on the browser tab -->
   <title>The Flying SCOT | Scottish Food Truck</title>
+  
+  <!-- Preconnecting to Google Fonts servers speeds up font loading times -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Imports the 'Inter' and 'Playfair Display' custom typography styles from Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap" rel="stylesheet">
+  
+  <!-- Imports the Font Awesome icon library so you can use icons like paper planes and social logos -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- Links your external stylesheet file (style.css) containing all visual look and layouts -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<!-- Navigation Bar: Stays fixed at the top of the screen -->
 <nav class="navbar">
   <div class="container nav-container">
+    <!-- Logo wrapper -->
     <div class="logo-area">
       <img class="logo-img" src="assets/The Flying Scot Tartan Logo.jpg" alt="The Flying SCOT Logo">
     </div>
+    
+    <!-- Hamburger menu button: Visible only on smaller mobile screens -->
     <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    
+    <!-- Navigation menu links linking directly to page sections using anchors (#) -->
     <ul class="nav-links" id="navLinks">
       <li><a href="#home">Home</a></li>
       <li><a href="#about">Story</a></li>
@@ -29,15 +50,18 @@
   </div>
 </nav>
 
+<!-- Hero Section: The massive bold introduction zone at the top of the homepage -->
 <section id="home" class="hero">
   <div class="container hero-content">
     <h1>The Flying SCOT</h1>
     <div class="hero-tagline">Authentic Scottish Food Big Flavour!!</div>
+    <!-- Empty group container reserved for future call-to-action buttons -->
     <div class="btn-group">
     </div>
   </div>
 </section>
 
+<!-- About Section: Details the story and background of the business -->
 <section id="about">
   <div class="container">
     <h2 class="section-title">Our story</h2> 
@@ -51,16 +75,21 @@
   </div>
 </section>
 
+<!-- Creations Section: Slider display showcase carousel of the food items -->
 <section id="offers" class="offers-section">
   <h2>Some of our Creations!!</h2>
   
   <div class="carousel-wrapper">
+    <!-- Slider left and right chevron buttons -->
     <button class="carousel-btn prev-btn" aria-label="Previous">&lsaquo;</button>
     <button class="carousel-btn next-btn" aria-label="Next">&rsaquo;</button>
     
+    <!-- Viewport hides items that overflow off the sides of the layout container -->
     <div class="carousel-viewport">
+      <!-- Track acts as the horizontal continuous strip carrying all individual cards -->
       <div class="carousel-track">
         
+        <!-- Individual Food Presentation Cards with image placeholders -->
         <div class="carousel-card">
           <img src="https://placehold.co/500x400?text=Breakfast+Rolls" alt="Breakfast Rolls">
           <h3>Breakfast Rolls</h3>
@@ -91,10 +120,12 @@
   </div>
 </section>
 
+<!-- Schedule Section: Weekly grid display showing food truck availability blocks -->
 <section id="schedule" class="schedule-section">
   <div class="container">
     <h2 class="section-title">Weekly Schedule</h2>
     
+    <!-- Horizontal row wrapper container holding individual day elements -->
     <div class="weekly-timeline">
       <div class="day-column">
         <span class="day-name">Mon</span>
@@ -134,6 +165,7 @@
 
     <p class="social-notice">Check our Socials for more Info & Specials</p>
     
+    <!-- Inline social profile redirection links targeted to open securely in new tabs -->
     <div class="schedule-social-links">
       <a href="https://facebook.com/profile.php?id=61590205208850" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
         <i class="fab fa-facebook-f"></i>
@@ -148,9 +180,11 @@
   </div>
 </section>
 
+<!-- Contact Section: Contains the message submission entry forms and newsletter block -->
 <section id="contact">
   <div class="container">
     
+    <!-- Main Event Booking / Inquiry Interactive Form -->
     <div class="contact-form-container">
       <h2 class="section-title" style="margin-bottom: 1rem;">Send us a message</h2>
       <p style="text-align: center; margin-bottom: 2rem; color: var(--charcoal);">Inquire about catering, private events, or just say hello!</p>
@@ -171,6 +205,7 @@
       </form>
     </div>
 
+    <!-- Secondary Newsletter Subscription Block -->
     <div class="newsletter">
       <h3>Get the first bite</h3>
       <p>Subscribe to our newsletter and receive upcoming event locations and weekly specials!</p>
@@ -184,6 +219,7 @@
   </div>
 </section>
       
+<!-- Footer Section: Business phone contacts, social icons, copyright, and privacy compliance link -->
 <footer class="footer">
   <div class="container footer-content">
     
@@ -206,19 +242,26 @@
 
   </div>
   <div class="copyright">
-  &copy; 2026 The Flying SCOT — Scottish Food. Big Flavour. All rights reserved. | <a href="privacy.html" target="_blank" style="color: var(--cream); text-decoration: underline;">Privacy Policy</a>
-</div>
+    &copy; 2026 The Flying SCOT — Scottish Food. Big Flavour. All rights reserved. | <a href="privacy.html" target="_blank" style="color: var(--cream); text-decoration: underline;">Privacy Policy</a>
+  </div>
 </footer>
 
+<!-- JavaScript Blocks: Handles interactivity and bridges submissions with the backend server -->
 <script>
+  // Self-executing anonymous function to keep global variables cleanly isolated and safe
   (function() {
-    // Mobile hamburger menu toggle
+    
+    // 1. MOBILE NAVBAR HAMBURGER MENU TOGGLE
     const hamburger = document.getElementById('hamburgerBtn');
     const navLinks = document.getElementById('navLinks');
+    
     if (hamburger && navLinks) {
+      // Listens for clicks on the hamburger icon button
       hamburger.addEventListener('click', (e) => {
-        e.stopPropagation();
-        navLinks.classList.toggle('active');
+        e.stopPropagation(); // Prevents the click event from bubbling up out into other elements
+        navLinks.classList.toggle('active'); // Toggles the CSS '.active' visibility rule configuration
+        
+        // Swaps the icon graphics representation between the bars icon and the close text cross
         const icon = hamburger.querySelector('i');
         if (navLinks.classList.contains('active')) {
           icon.classList.remove('fa-bars');
@@ -228,6 +271,8 @@
           icon.classList.add('fa-bars');
         }
       });
+      
+      // Automatically closes the menu drawer drawer overlay layout when clicking a page link
       document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', () => {
           navLinks.classList.remove('active');
@@ -240,34 +285,38 @@
       });
     }
 
-    // Smooth scroll for anchor links
+    // 2. SMOOTH ACCELERATED ANCHOR LINK SCROLLING MECHANICS
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
         if (href === "#" || href === "") return;
         const targetElem = document.querySelector(href);
         if (targetElem) {
-          e.preventDefault();
+          e.preventDefault(); // Stifles sudden hard native browser section jumping shifts
           targetElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       });
     });
 
-    // Handler for the "Send us a message" Form
+    // 3. CONTACT INQUIRY API DISPATCH LOGIC (COMMUNICATES VIA RESEND HOOK)
     const contactForm = document.getElementById('sendMessageForm');
     if (contactForm) {
       contactForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Halts old page reloading logic when forms are submitted
+        
+        // Captures standard user inputs values cleanly from target form nodes
         const name = document.getElementById('contactName')?.value || '';
         const email = document.getElementById('contactEmail')?.value || '';
         const message = document.getElementById('contactMessage')?.value || '';
 
+        // Validation buffer ensuring user entry blocks are full before sending data requests
         if (!name || !email || !message) {
           alert('Please fill out all fields before submitting.');
           return;
         }
 
         try {
+          // Dispatches form values structured inside an asynchronous fetch request payload straight to the live route
           const response = await fetch('/api/contact', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -276,6 +325,7 @@
           
           const result = await response.json();
           
+          // Clear form interface metrics on successful email transmissions 
           if (result.success) {
             alert('Your message has been sent Successfully!');
             contactForm.reset(); 
@@ -289,7 +339,7 @@
       });
     }
 
-    // Handler for the "Get the first bite" Newsletter Form
+    // 4. NEWSLETTER SUBSCRIPTION FLOW HANDLER
     const subForm = document.getElementById('subscribeForm');
     if (subForm) {
       subForm.addEventListener('submit', async (e) => {
@@ -325,21 +375,25 @@
   })();
 </script>
 
+<!-- Script file controlling visual carousel displacement transitions -->
 <script>
   const track = document.querySelector('.carousel-track');
   const prevBtn = document.querySelector('.prev-btn');
   const nextBtn = document.querySelector('.next-btn');
   
-  let index = 0;
+  let index = 0; // Tracks the current card position offset metric
 
+  // Computes card width profiles dynamically to adjust spatial transformation measurements
   function updateCarousel() {
     const card = document.querySelector('.carousel-card');
     if (!card) return;
-    const cardWidth = card.offsetWidth + 20; 
-    track.style.transform = `translateX(-${index * cardWidth}px)`;
+    const cardWidth = card.offsetWidth + 20; // Card width + layout column spacing gap
+    track.style.transform = `translateX(-${index * cardWidth}px)`; // Slides the track container horizontally
   }
 
+  // Next Arrow Click Listener
   nextBtn.addEventListener('click', () => {
+    // Calculates max layout slide parameters to prevent moving into blank views
     const maxIndex = track.children.length - Math.floor(document.querySelector('.carousel-viewport').offsetWidth / document.querySelector('.carousel-card').offsetWidth);
     if (index < maxIndex) {
       index++;
@@ -347,6 +401,7 @@
     }
   });
 
+  // Previous Arrow Click Listener
   prevBtn.addEventListener('click', () => {
     if (index > 0) {
       index--;
@@ -354,6 +409,7 @@
     }
   });
 
+  // Re-calculates and re-aligns positions cleanly when resizing screens
   window.addEventListener('resize', updateCarousel);
 </script>
 </body>

@@ -1,80 +1,95 @@
+/* ==========================================================================
+   1. GLOBAL RESETS & BASE STYLES
+   ========================================================================== */
+
+/* The asterisk (*) selects every single element on the page */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  margin: 0;             /* Removes default browser margins */
+  padding: 0;            /* Removes default browser padding */
+  box-sizing: border-box; /* Includes padding and borders in the element's total width/height calculations */
 }
 
+/* Base structural styles applied directly to the body tag */
 body {
-  font-family: 'Inter', sans-serif;
-  background-color: #f4ebd8;  /* Warm Cream background */
-  color: #111111;              /* Charcoal for text */
-  line-height: 1.5;
-  scroll-behavior: smooth;
+  font-family: 'Inter', sans-serif; /* Sets the default clean sans-serif typeface for the page */
+  background-color: #f4ebd8;  /* Warm Cream background color */
+  color: #111111;              /* Charcoal color for body text readability */
+  line-height: 1.5;            /* Adds comfortable vertical space between lines of text */
+  scroll-behavior: smooth;     /* Creates a smooth sliding movement when users click navigation anchors */
 }
 
+/* Global variables accessible across the entire stylesheet for easy brand consistency */
 :root {
   --navy: #1a2a40;
   --cream: #f4ebd8;
   --crimson: #b32025;
   --slate: #637b94;
   --charcoal: #111111;
+  /* Reusable box shadows for adding modern design depth */
   --shadow-sm: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
   --shadow-md: 0 20px 25px -12px rgba(0, 0, 0, 0.1);
 }
 
+/* Center alignment utility class used to keep content bound inside desktop dimensions */
 .container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 32px;
+  max-width: 1280px;  /* Limits the maximum stretch width on desktop monitors */
+  margin: 0 auto;     /* Centers the container horizontally within the screen view */
+  padding: 0 32px;    /* Places defensive structural margins on the left/right bounds */
 }
 
-/* Navigation - Deep Navy */
+/* ==========================================================================
+   2. NAVIGATION BAR STYLES
+   ========================================================================== */
+
 .navbar {
-  background: rgba(26, 42, 64, 0.96);  /* Navy with slight transparency */
-  backdrop-filter: blur(8px);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  border-bottom: 1px solid rgba(244, 235, 216, 0.2);
+  background: rgba(26, 42, 64, 0.96);  /* Semi-transparent version of your Deep Navy variable */
+  backdrop-filter: blur(8px);         /* Modern effect that blurs elements behind the bar as users scroll */
+  position: sticky;                   /* Locks the navigation bar to the top of the browser window */
+  top: 0;                             /* Holds the stuck position directly at the ceiling boundary */
+  z-index: 1000;                      /* Ensures the navigation sits physically on top of all other content layers */
+  border-bottom: 1px solid rgba(244, 235, 216, 0.2); /* Subtle dividing border line */
   padding: 0.75rem 0;
 }
 
+/* Uses flexbox to space the logo and the navigation link groups nicely */
 .nav-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+  justify-content: space-between;     /* Pushes logo to the left edge and menu links to the right edge */
+  align-items: center;                /* Vertically centers both units */
+  flex-wrap: wrap;                    /* Allows content to drop rows if cramped */
 }
 
 .logo-img {
   height: 100px;
   width: auto;
   max-width: 180px;
-  object-fit: contain;
+  object-fit: contain;                /* Guarantees the brand logo image scales without distortion */
 }
 
 .nav-links {
   display: flex;
-  gap: 2rem;
-  list-style: none;
+  gap: 2rem;                          /* Modern structural layout tool inserting consistent spaces between items */
+  list-style: none;                   /* Deletes traditional default browser list bullet points */
   align-items: center;
 }
 
 .nav-links li a {
-  text-decoration: none;
-  font-weight: 600;
-  color: var(--cream);
-  transition: color 0.2s;
+  text-decoration: none;              /* Removes default text underline stylings on links */
+  font-weight: 600;                   /* Makes text semi-bold */
+  color: var(--cream);                /* Utilizes the root custom brand color variable */
+  transition: color 0.2s;             /* Creates a smooth fade effect during state shifts */
   font-size: 1rem;
-  letter-spacing: -0.2px;
+  letter-spacing: -0.2px;             /* Tighter modern character tracking look */
 }
 
+/* Interactivity state tracking when an option is highlighted */
 .nav-links li a:hover {
-  color: var(--crimson);
+  color: var(--crimson);              /* Turns link text red on desktop cursor hover */
 }
 
+/* Responsive navigation switch element hidden on desktop resolutions */
 .hamburger {
-  display: none;
+  display: none;                      /* Keeps the button completely hidden until mobile rules take over */
   font-size: 1.8rem;
   background: none;
   border: none;
@@ -82,11 +97,15 @@ body {
   color: var(--cream);
 }
 
-/* Hero Section */
+/* ==========================================================================
+   3. HERO BANNER LANDING STYLES
+   ========================================================================== */
+
 .hero {
+  /* Blends dark gradient shading overlays smoothly into the main high-res presentation photo background */
   background: linear-gradient(rgba(26, 42, 64, 0.75), rgba(17, 17, 17, 0.65)), url('https://images.unsplash.com/photo-1561758033-d89a9ad46330?q=80&w=2070&auto=format');
-  background-size: cover;
-  background-position: center 35%;
+  background-size: cover;             /* Scales graphic components evenly to fully encompass space */
+  background-position: center 35%;    /* Centers focus coordinates perfectly around the food items */
   padding: 6rem 0 7rem 0;
   color: var(--cream);
   text-align: center;
@@ -94,12 +113,12 @@ body {
 }
 
 .hero-content h1 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', serif; /* Premium editorial brand heading typeface */
   font-size: 3.8rem;
   font-weight: 800;
   letter-spacing: -0.02em;
   margin-bottom: 1rem;
-  text-shadow: 2px 2px 12px rgba(0,0,0,0.5);
+  text-shadow: 2px 2px 12px rgba(0,0,0,0.5); /* Enhances text contrast overlay visibility above complex backdrops */
   color: var(--cream);
 }
 
@@ -117,13 +136,14 @@ body {
   flex-wrap: wrap;
 }
 
+/* Base layout rules for action buttons */
 .btn-primary, .btn-secondary {
   display: inline-block;
   padding: 0.9rem 2rem;
-  border-radius: 40px;
+  border-radius: 40px;                /* Creates high pill-style curved shapes */
   font-weight: 700;
   text-decoration: none;
-  transition: all 0.25s;
+  transition: all 0.25s;              /* Adds smooth motion to any visual modifications */
   font-size: 1rem;
 }
 
@@ -134,8 +154,8 @@ body {
 }
 
 .btn-primary:hover {
-  background-color: #8a1a1e;
-  transform: translateY(-3px);
+  background-color: #8a1a1e;          /* Deeper dark red variation on hover */
+  transform: translateY(-3px);        /* Soft animated hover bounce lift effect */
   box-shadow: var(--shadow-md);
 }
 
@@ -151,9 +171,12 @@ body {
   transform: translateY(-3px);
 }
 
-/* General sections */
+/* ==========================================================================
+   4. CONTENT LAYOUT BLOCKS & TEXT UNITS
+   ========================================================================== */
+
 section {
-  padding: 5rem 0;
+  padding: 5rem 0;                    /* Creates balanced structural whitespace between page blocks */
 }
 
 .section-title {
@@ -166,17 +189,17 @@ section {
   width: 100%;
 }
 
+/* Advanced CSS trick adding a decorative line beneath section headers automatically */
 .section-title:after {
-  content: '';
+  content: '';                        /* Required for pseudo-elements to render properly */
   display: block;
   width: 80px;
   height: 3px;
-  background: var(--crimson);
-  margin: 0.8rem auto 0;
+  background: var(--crimson);         /* Red color for the line */
+  margin: 0.8rem auto 0;              /* Centers the decorative accent line */
   border-radius: 4px;
 }
 
-/* About section */
 .about-grid {
   display: flex;
   gap: 3rem;
@@ -185,7 +208,7 @@ section {
 }
 
 .about-text {
-  flex: 1;
+  flex: 1;                            /* Instructs text columns to expand evenly into the width grid */
   font-size: 1.1rem;
   color: var(--charcoal);
 }
@@ -206,14 +229,17 @@ section {
   color: var(--slate);
 }
 
-/* Menu grid */
+/* ==========================================================================
+   5. MENU DISPLAY GRID OPTIONS (BACKUP MODULE)
+   ========================================================================== */
+
 #menu {
-  background-color: #fef7e6;
+  background-color: #fef7e6;           /* Shifts layout color slightly to build distinct sections */
 }
 
 .menu-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  display: grid;                      /* Leverages explicit grid configuration models */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* Auto-scales columns cleanly across layout changes */
   gap: 2rem;
   margin-top: 1rem;
 }
@@ -221,14 +247,14 @@ section {
 .menu-card {
   background: white;
   border-radius: 28px;
-  overflow: hidden;
+  overflow: hidden;                   /* Clips child elements like images to match card corner shapes */
   box-shadow: var(--shadow-sm);
   transition: all 0.3s ease;
   border: 1px solid #e0d5c0;
 }
 
 .menu-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-8px);        /* Lifts item card upwards dynamically when interacted with */
   box-shadow: var(--shadow-md);
 }
 
@@ -265,7 +291,10 @@ section {
   font-size: 0.95rem;
 }
 
-/* Schedule & Location */
+/* ==========================================================================
+   6. INFRASTRUCTURE BLOCKS (MAPS, FORMS, AND SUBSCRIPTIONS)
+   ========================================================================== */
+
 .schedule-location {
   background: #e9dfcd;
   border-radius: 48px;
@@ -292,12 +321,12 @@ section {
 
 .hours-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: collapse;          /* Blends adjoining interior box borders smoothly together */
 }
 
 .hours-table td {
   padding: 0.6rem 0;
-  border-bottom: 1px dashed #c4b69c;
+  border-bottom: 1px dashed #c4b69c;  /* Subtle design divider dots between operational logs */
   color: var(--charcoal);
 }
 
@@ -335,7 +364,6 @@ section {
   background: #4e627c;
 }
 
-/* Newsletter */
 .newsletter {
   background: linear-gradient(115deg, var(--navy) 0%, #0f1a2b 100%);
   color: var(--cream);
@@ -384,10 +412,68 @@ section {
 
 .news-form button:hover {
   background: #8a1a1e;
-  transform: scale(0.97);
+  transform: scale(0.97);              /* depresses slightly when hovered */
 }
 
-/* Footer */
+/* ==========================================================================
+   7. INTERACTIVE MESSAGE FORMS & FOOTER NODES
+   ========================================================================== */
+
+.contact-form-container {
+  background: #ffffff;
+  border-radius: 40px;
+  padding: 3rem;
+  box-shadow: var(--shadow-sm);
+  max-width: 600px;
+  margin: 0 auto 4rem auto; 
+  text-align: center;
+  border: 1px solid #e0d5c0;
+}
+
+.contact-form-container h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--navy);
+  margin-bottom: 0.5rem;
+}
+
+.contact-form-container p {
+  color: var(--charcoal);
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+.message-form {
+  display: flex;
+  flex-direction: column;             /* Arranges text input areas sequentially vertically downwards */
+  gap: 1.2rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border-radius: 16px;
+  border: 1px solid #d9cfb5;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  background: var(--cream);
+  color: var(--charcoal);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Dynamic visualization update highlighting focus fields actively selected by user cursors */
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;                      /* Deletes default hard blue browser outline frame rings */
+  border-color: var(--crimson);       /* Sets outline boundaries to the red primary configuration theme color */
+  box-shadow: 0 0 0 3px rgba(179, 32, 37, 0.1); /* Inserts elegant color glow halos around input text boxes */
+}
+
+.form-group textarea {
+  resize: vertical;                   /* Restricts horizontal widening shifts to prevent layout breakages */
+}
+
 .footer {
   background: var(--navy);
   color: var(--cream);
@@ -420,7 +506,7 @@ section {
 }
 
 .contact-info a.phone-link {
-  color: var(--cream) !important;
+  color: var(--cream) !important;      /* Forces text values to securely hold color theme metrics */
   text-decoration: none;
   margin-left: 8px;
   transition: color 0.2s;
@@ -442,83 +528,33 @@ section {
   opacity: 0.8;
 }
 
-/* --- Contact Form --- */
-.contact-form-container {
-  background: #ffffff;
-  border-radius: 40px;
-  padding: 3rem;
-  box-shadow: var(--shadow-sm);
-  max-width: 600px;
-  margin: 0 auto 4rem auto; 
-  text-align: center;
-  border: 1px solid #e0d5c0;
-}
+/* ==========================================================================
+   8. RESPONSIVE MEDIA QUERIES (MOBILE RESIZING LAYER)
+   ========================================================================== */
 
-.contact-form-container h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
-  color: var(--navy);
-  margin-bottom: 0.5rem;
-}
-
-.contact-form-container p {
-  color: var(--charcoal);
-  margin-bottom: 2rem;
-  font-size: 0.95rem;
-}
-
-.message-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-}
-
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: 1rem 1.2rem;
-  border-radius: 16px;
-  border: 1px solid #d9cfb5;
-  font-family: 'Inter', sans-serif;
-  font-size: 1rem;
-  background: var(--cream);
-  color: var(--charcoal);
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: var(--crimson);
-  box-shadow: 0 0 0 3px rgba(179, 32, 37, 0.1); 
-}
-
-.form-group textarea {
-  resize: vertical; 
-}
-
-/* Responsive Styles */
+/* Triggers automatically whenever screen viewport measures drop underneath 860px */
 @media (max-width: 860px) {
   .container {
-    padding: 0 24px;
+    padding: 0 24px;                  /* Reduces horizontal spacing slightly on tighter screens */
   }
   .nav-links {
-    display: none;
+    display: none;                    /* Conceals list elements dynamically on start */
     width: 100%;
-    flex-direction: column;
+    flex-direction: column;           /* Shifts layout links vertically inside mobile toggles */
     align-items: center;
     gap: 1.2rem;
     padding: 1.5rem 0 0.8rem;
     background: var(--navy);
   }
+  /* Injected dynamically via script functions to expose mobile layouts when clicked */
   .nav-links.active {
     display: flex;
   }
   .hamburger {
-    display: block;
+    display: block;                   /* Displays mobile navigation toggles instantly */
   }
   .hero-content h1 {
-    font-size: 2.4rem;
+    font-size: 2.4rem;                /* Shrinks header typography proportions to avoid overflow text wrapping */
   }
   .hero-tagline {
     font-size: 1.1rem;
@@ -527,21 +563,23 @@ section {
     font-size: 2rem;
   }
   .schedule-location {
-    flex-direction: column;
+    flex-direction: column;           /* Redraws container structures cleanly downwards */
   }
   .about-grid {
-    flex-direction: column-reverse;
+    flex-direction: column-reverse;   /* Inverts vertical positioning stack targets on mobile layouts */
     text-align: center;
   }
+  /* KEY AREA FIX: Forces horizontal operational cards to flow vertically down on small phones */
   .weekly-timeline {
     flex-direction: column;
     gap: 16px;
   }
 }
 
-/* ==========================================
-   CAROUSEL LAYOUT STYLES
-   ========================================== */
+/* ==========================================================================
+   9. CAROUSEL INTERACTIVE SLIDER STYLES
+   ========================================================================== */
+
 .offers-section {
   text-align: center;
   padding: 5rem 0;
@@ -554,26 +592,26 @@ section {
 
 .carousel-wrapper {
   position: relative;
-  max-width: 1000px;
+  max-width: 1000px;                  /* Restricts the width scope grid beautifully on desktop */
   margin: 0 auto;
-  padding: 0 45px;
+  padding: 0 45px;                    /* Reserves padding boundaries for slide arrow components */
   box-sizing: border-box;
 }
 
 .carousel-viewport {
-  overflow: hidden;
+  overflow: hidden;                   /* Crops visibility profiles to keep sliding elements secret until moved */
   width: 100%;
 }
 
 .carousel-track {
   display: flex;
   gap: 20px;
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth hardware-accelerated movement curves */
   padding: 15px 0;
 }
 
 .carousel-card {
-  flex: 0 0 calc(33.333% - 14px);
+  flex: 0 0 calc(33.333% - 14px);     /* Scales columns to exhibit exactly 3 presentation elements on desktop windows */
   background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
@@ -584,7 +622,7 @@ section {
 
 .carousel-card img {
   width: 100%;
-  height: 200px;
+  height: 200px;                      /* Holds fixed dimensions to maintain strict uniform line grids */
   object-fit: cover;
   display: block;
 }
@@ -600,7 +638,7 @@ section {
 .carousel-btn {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%);        /* Vertically centers slider trigger components flawlessly */
   width: 40px;
   height: 40px;
   background: #ffffff;
@@ -625,34 +663,37 @@ section {
 .prev-btn { left: 0; }
 .next-btn { right: 0; }
 
+/* Mid-tier Tablet breakpoint layouts */
 @media (max-width: 768px) {
   .carousel-card {
-    flex: 0 0 calc(50% - 10px);
+    flex: 0 0 calc(50% - 10px);       /* Adapts columns grid matrix safely to showcase exactly 2 item blocks */
   }
 }
 
+/* Compact smartphone layout modifications */
 @media (max-width: 480px) {
   .carousel-wrapper {
-    padding: 0;
+    padding: 0;                       /* Maximizes small canvas tracking widths */
   }
   .carousel-btn {
-    display: none;
+    display: none;                    /* Conceals buttons to favor native touch gestures */
   }
   .carousel-viewport {
-    overflow-x: auto;
-    scrollbar-width: none;
+    overflow-x: auto;                 /* Opens up hardware-smooth touch momentum swipe tracks */
+    scrollbar-width: none;            /* Hides scrollbars on Firefox */
   }
   .carousel-viewport::-webkit-scrollbar {
-    display: none;
+    display: none;                    /* Hides scrollbars on Chrome, Safari, and Edge */
   }
   .carousel-card {
-    flex: 0 0 75%;
+    flex: 0 0 75%;                    /* Frames one element cleanly with a slight peek into incoming items */
   }
 }
 
-/* ==========================================
-   WEEKLY SCHEDULE ROW STYLES
-   ========================================== */
+/* ==========================================================================
+   10. WEEKLY AVAILABILITY GRID COMPONENTS
+   ========================================================================== */
+
 .schedule-section {
   background-color: #e9dfcd;
   padding: 5rem 0;
