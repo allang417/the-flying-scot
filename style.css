@@ -176,7 +176,7 @@ section {
   border-radius: 4px;
 }
 
-/* About section (cream background by default, but we keep body cream) */
+/* About section */
 .about-grid {
   display: flex;
   gap: 3rem;
@@ -208,7 +208,7 @@ section {
 
 /* Menu grid */
 #menu {
-  background-color: #fef7e6; /* slightly lighter cream for contrast */
+  background-color: #fef7e6;
 }
 
 .menu-grid {
@@ -267,7 +267,7 @@ section {
 
 /* Schedule & Location */
 .schedule-location {
-  background: #e9dfcd;  /* warm cream variant */
+  background: #e9dfcd;
   border-radius: 48px;
   padding: 2.5rem;
   display: flex;
@@ -335,7 +335,7 @@ section {
   background: #4e627c;
 }
 
-/* Newsletter - Navy base with crimson accent */
+/* Newsletter */
 .newsletter {
   background: linear-gradient(115deg, var(--navy) 0%, #0f1a2b 100%);
   color: var(--cream);
@@ -387,7 +387,7 @@ section {
   transform: scale(0.97);
 }
 
-/* Footer - Deep Navy */
+/* Footer */
 .footer {
   background: var(--navy);
   color: var(--cream);
@@ -420,19 +420,19 @@ section {
 }
 
 .contact-info a.phone-link {
-  color: var(--cream) !important; /* Forces the phone number to be cream */
+  color: var(--cream) !important;
   text-decoration: none;
-  margin-left: 8px; /* Adds a little space between the name and number */
+  margin-left: 8px;
   transition: color 0.2s;
 }
 
 .contact-info a.phone-link i {
-  color: var(--cream) !important; /* Forces the phone icon to be cream */
+  color: var(--cream) !important;
 }
 
 .contact-info a.phone-link:hover,
 .contact-info a.phone-link:hover i {
-  color: var(--crimson) !important; /* Turns red on hover */
+  color: var(--crimson) !important;
 }
 
 .copyright {
@@ -444,60 +444,60 @@ section {
 
 /* --- Contact Form --- */
 .contact-form-container {
-    background: #ffffff;
-    border-radius: 40px;
-    padding: 3rem;
-    box-shadow: var(--shadow-sm);
-    max-width: 600px;
-    margin: 0 auto 4rem auto; 
-    text-align: center;
-    border: 1px solid #e0d5c0;
+  background: #ffffff;
+  border-radius: 40px;
+  padding: 3rem;
+  box-shadow: var(--shadow-sm);
+  max-width: 600px;
+  margin: 0 auto 4rem auto; 
+  text-align: center;
+  border: 1px solid #e0d5c0;
 }
 
 .contact-form-container h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    color: var(--navy);
-    margin-bottom: 0.5rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--navy);
+  margin-bottom: 0.5rem;
 }
 
 .contact-form-container p {
-    color: var(--charcoal);
-    margin-bottom: 2rem;
-    font-size: 0.95rem;
+  color: var(--charcoal);
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
 }
 
 .message-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 
 .form-group input,
 .form-group textarea {
-    width: 100%;
-    padding: 1rem 1.2rem;
-    border-radius: 16px;
-    border: 1px solid #d9cfb5;
-    font-family: 'Inter', sans-serif;
-    font-size: 1rem;
-    background: var(--cream);
-    color: var(--charcoal);
-    transition: border-color 0.3s, box-shadow 0.3s;
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border-radius: 16px;
+  border: 1px solid #d9cfb5;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  background: var(--cream);
+  color: var(--charcoal);
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
-    outline: none;
-    border-color: var(--crimson);
-    box-shadow: 0 0 0 3px rgba(179, 32, 37, 0.1); 
+  outline: none;
+  border-color: var(--crimson);
+  box-shadow: 0 0 0 3px rgba(179, 32, 37, 0.1); 
 }
 
 .form-group textarea {
-    resize: vertical; 
+  resize: vertical; 
 }
 
-/* Responsive */
+/* Responsive Styles */
 @media (max-width: 860px) {
   .container {
     padding: 0 24px;
@@ -533,40 +533,38 @@ section {
     flex-direction: column-reverse;
     text-align: center;
   }
+  .weekly-timeline {
+    flex-direction: column;
+    gap: 16px;
+  }
 }
 
 /* ==========================================
    CAROUSEL LAYOUT STYLES
    ========================================== */
-
-/* Centers the section and balances padding */
 .offers-section {
   text-align: center;
   padding: 5rem 0;
   width: 100%;
 }
 
-/* Headings inherit global styles natively */
 .offers-section h2 {
   margin-bottom: 3rem;
 }
 
-/* Carousel Wrapper Setup */
 .carousel-wrapper {
   position: relative;
-  max-width: 1000px; /* Binds the carousel width beautifully on desktop */
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 0 45px; /* Leaves perfect room for buttons on the sides */
+  padding: 0 45px;
   box-sizing: border-box;
 }
 
-/* Viewport hides the overflow horizontal items */
 .carousel-viewport {
   overflow: hidden;
   width: 100%;
 }
 
-/* Horizontal Track sliding mechanics */
 .carousel-track {
   display: flex;
   gap: 20px;
@@ -574,9 +572,8 @@ section {
   padding: 15px 0;
 }
 
-/* Beautiful, consistent presentation cards */
 .carousel-card {
-  flex: 0 0 calc(33.333% - 14px); /* Desktop: Shows 3 perfectly uniform cards */
+  flex: 0 0 calc(33.333% - 14px);
   background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
@@ -587,7 +584,7 @@ section {
 
 .carousel-card img {
   width: 100%;
-  height: 200px; /* Fixed height keeps every single image visually aligned */
+  height: 200px;
   object-fit: cover;
   display: block;
 }
@@ -600,7 +597,6 @@ section {
   font-weight: 600;
 }
 
-/* Navigation Buttons Styling */
 .carousel-btn {
   position: absolute;
   top: 50%;
@@ -629,19 +625,18 @@ section {
 .prev-btn { left: 0; }
 .next-btn { right: 0; }
 
-/* Responsive adjustments for Tablets and Mobile screens */
 @media (max-width: 768px) {
   .carousel-card {
-    flex: 0 0 calc(50% - 10px); /* Tablets: Shows 2 cards */
+    flex: 0 0 calc(50% - 10px);
   }
 }
 
 @media (max-width: 480px) {
   .carousel-wrapper {
-    padding: 0; /* Drops side padding so items maximize small screens */
+    padding: 0;
   }
   .carousel-btn {
-    display: none; /* Emphasizes native touch swipe on mobile profiles */
+    display: none;
   }
   .carousel-viewport {
     overflow-x: auto;
@@ -651,20 +646,19 @@ section {
     display: none;
   }
   .carousel-card {
-    flex: 0 0 75%; /* Mobile: Shows 1 card fully, with a preview of the next */
+    flex: 0 0 75%;
   }
 }
+
 /* ==========================================
    WEEKLY SCHEDULE ROW STYLES
    ========================================== */
-
 .schedule-section {
-  background-color: #e9dfcd; /* Warm cream variant */
+  background-color: #e9dfcd;
   padding: 5rem 0;
   text-align: center;
 }
 
-/* Horizontal Row Configuration */
 .weekly-timeline {
   display: flex;
   justify-content: space-between;
@@ -673,7 +667,6 @@ section {
   width: 100%;
 }
 
-/* Individual day card elements */
 .day-column {
   flex: 1;
   background: #ffffff;
@@ -700,7 +693,6 @@ section {
   font-weight: 500;
 }
 
-/* Bottom centered call out text */
 .social-notice {
   font-family: 'Playfair Display', serif;
   font-size: 1.3rem;
@@ -710,7 +702,6 @@ section {
   text-align: center;
 }
 
-/* Schedule Block Interactive Social Icons */
 .schedule-social-links {
   display: flex;
   justify-content: center;
