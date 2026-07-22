@@ -175,8 +175,6 @@ img { max-width: 100%; display: block; }
 
 .hero-logo {
   width: min(340px, 72vw);
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
   margin: 0 auto 2rem;
   border-radius: 50%;
   box-shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.55);
@@ -485,6 +483,27 @@ section { padding: 4.5rem 0; }
 }
 
 .message-form textarea { resize: vertical; min-height: 130px; }
+
+.consent-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+}
+.consent-row input[type="checkbox"] {
+  width: 19px;
+  height: 19px;
+  accent-color: var(--crimson);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.consent-row label {
+  margin: 0;
+  font-weight: 500;
+  color: var(--ink-soft);
+  font-size: 0.93rem;
+  cursor: pointer;
+}
 
 /* Honeypot: hidden from humans, visible to bots */
 .hp-field {
