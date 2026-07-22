@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="The Flying SCOT - authentic Scottish street food in Canterbury, NZ. Haggis breakfast rolls, gourmet pies, Scottish tablet and more. Scottish Food. Big Flavour.">
+  <title>The Flying SCOT | Scottish Street Food, Canterbury NZ</title>
+
+  <!-- Social sharing preview -->
+  <meta property="og:title" content="The Flying SCOT | Scottish Street Food">
+  <meta property="og:description" content="Scottish Food. Big Flavour. Haggis breakfast rolls, gourmet pies & Scottish tablet across Canterbury.">
+  <meta property="og:image" content="/assets/logo.jpg">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" type="image/jpeg" href="/assets/logo.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- ===== Navigation ===== -->
+<nav class="navbar">
+  <div class="container nav-container">
+    <a href="#home" class="brand">
+      <img src="assets/logo.jpg" alt="The Flying SCOT logo">
+      <span>The Flying <em>SCOT</em></span>
+    </a>
+
+    <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <i class="fas fa-bars" aria-hidden="true"></i>
+    </button>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">Our Story</a></li>
+      <li><a href="#offers">Creations</a></li>
+      <li><a href="#schedule">Schedule</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- ===== Hero ===== -->
+<section id="home" class="hero">
+  <div class="container">
+    <img class="hero-logo" src="assets/logo.jpg" alt="The Flying SCOT - Scottish food truck illustration with tartan and thistle">
+    <h1>The Flying <em>SCOT</em></h1>
+    <p class="hero-tagline">Scottish Food<span class="dot">.</span> Big Flavour<span class="dot">.</span></p>
+    
+  </div>
+</section>
+<div class="tartan" aria-hidden="true"></div>
+
+<!-- ===== About ===== -->
+<section id="about">
+  <div class="container">
+    <span class="eyebrow">From the Highlands to the Port Hills</span>
+    <h2 class="section-title">Our Story</h2>
+    <div class="about-text">
+      <p><span class="about-highlight">The Flying SCOT</span> took off in the heart of Canterbury, blending traditional Scottish recipes with bold street food innovation. Born from a passion for honest, soulful cooking, we use only <strong>homemade haggis</strong> in our dishes - bringing haggis-inspired burgers, lorne sausage, tattie scones and many more soulful creations to the streets of Christchurch and Canterbury.</p>
+      <p>Every dish is crafted with locally sourced ingredients, sustainable produce, and a whole lot of Highland spirit. Soar above ordinary fast food - experience the true taste of modern Scotland.</p>
+      <p>From <strong>morning rolls</strong> stacked with haggis, black pudding, lorne sausage, tattie scones, eggs and bacon, to <strong>gourmet pies</strong>, <strong>Scottish tablet</strong> and more - come find us and see what's on offer!</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Creations ===== -->
+<section id="offers" class="offers-section">
+  <div class="container">
+    
+    <h2 class="section-title">Some of Our Creations</h2>
+  </div>
+
+  <div class="carousel-wrapper">
+    <button class="carousel-btn prev-btn" id="prevBtn" aria-label="Previous creations">&lsaquo;</button>
+    <button class="carousel-btn next-btn" id="nextBtn" aria-label="Next creations">&rsaquo;</button>
+
+    <div class="carousel-viewport" id="carouselViewport" tabindex="0" aria-label="Food creations carousel">
+      <div class="carousel-card">
+        <img src="https://placehold.co/500x400/16233a/f4ebd8?text=Breakfast+Rolls" alt="Breakfast rolls" loading="lazy">
+        <h3>Breakfast Rolls</h3>
+      </div>
+      <div class="carousel-card">
+        <img src="https://placehold.co/500x400/b32025/f4ebd8?text=Gourmet+Pies" alt="Gourmet pies" loading="lazy">
+        <h3>Gourmet Pies</h3>
+      </div>
+      <div class="carousel-card">
+        <img src="https://placehold.co/500x400/16233a/f4ebd8?text=Scottish+Tablet" alt="Scottish tablet" loading="lazy">
+        <h3>Scottish Tablet</h3>
+      </div>
+      <div class="carousel-card">
+        <img src="https://placehold.co/500x400/b32025/f4ebd8?text=Scotch+Pies" alt="Scotch pies" loading="lazy">
+        <h3>Scotch Pies</h3>
+      </div>
+      <div class="carousel-card">
+        <img src="https://placehold.co/500x400/16233a/f4ebd8?text=Scottish+Drinks" alt="Scottish drinks including Irn-Bru" loading="lazy">
+        <h3>Scottish Drinks</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Schedule ===== -->
+<section id="schedule" class="schedule-section">
+  <div class="container">
+    <span class="eyebrow">Where to find us</span>
+    <h2 class="section-title">Weekly Schedule</h2>
+
+    <!-- Add class "open" to a day-column and set its hours to highlight open days,
+         e.g. <div class="day-column open"> ... <span class="day-hours">7am–1pm</span> -->
+    <div class="weekly-timeline">
+      <div class="day-column"><span class="day-name">Mon</span><span class="day-hours">Closed</span></div>
+      <div class="day-column"><span class="day-name">Tue</span><span class="day-hours">Closed</span></div>
+      <div class="day-column"><span class="day-name">Wed</span><span class="day-hours">Closed</span></div>
+      <div class="day-column"><span class="day-name">Thu</span><span class="day-hours">Closed</span></div>
+      <div class="day-column"><span class="day-name">Fri</span><span class="day-hours">Closed</span></div>
+      <div class="day-column"><span class="day-name">Sat</span><span class="day-hours">Closed</span></div>
+      <div class="day-column"><span class="day-name">Sun</span><span class="day-hours">Closed</span></div>
+    </div>
+
+    <p class="social-notice">Check our socials for pop-up locations &amp; specials</p>
+
+    <div class="schedule-social-links">
+      <a href="https://facebook.com/profile.php?id=61590205208850" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+      <a href="https://instagram.com/theflyingscot.nz" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+      <a href="https://tiktok.com/@theflyingscot.nz" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</section>
+<div class="tartan" aria-hidden="true"></div>
+
+<!-- ===== Contact ===== -->
+<section id="contact">
+  <div class="container">
+
+    <div class="contact-form-container">
+      <h2 class="section-title">Send Us a Message</h2>
+      <p class="contact-intro">Ask about catering, private events, or just say hello!</p>
+
+      <form class="message-form" id="sendMessageForm" novalidate>
+        <div>
+          <label for="contactName">Your name</label>
+          <input type="text" id="contactName" name="name" autocomplete="name" required>
+        </div>
+        <div>
+          <label for="contactEmail">Your email</label>
+          <input type="email" id="contactEmail" name="email" autocomplete="email" required>
+        </div>
+        <div>
+          <label for="contactMessage">Message</label>
+          <textarea id="contactMessage" name="message" rows="5" placeholder="Tell us about your event or enquiry..." required></textarea>
+        </div>
+
+        <!-- Honeypot: bots fill this, humans never see it -->
+        <div class="hp-field" aria-hidden="true">
+          <label for="website">Leave this field empty</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <button type="submit" class="btn-primary" id="contactSubmit">
+          <i class="fas fa-paper-plane" aria-hidden="true"></i> Send message
+        </button>
+        <p class="form-status" id="contactStatus" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+
+    <div class="newsletter">
+      <h3>Get the First Bite</h3>
+      <p>Subscribe for upcoming locations and weekly specials.</p>
+      <form class="news-form" id="subscribeForm" novalidate>
+        <label for="subEmail" class="hp-field">Email address</label>
+        <input type="email" id="subEmail" name="email" placeholder="Your email address" autocomplete="email" required>
+        <button type="submit" id="subSubmit"><i class="fas fa-paper-plane" aria-hidden="true"></i> Subscribe</button>
+      </form>
+      <p class="form-status" id="subStatus" role="status" aria-live="polite"></p>
+      <p class="small">No spam, just haggis &amp; good times.</p>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- ===== Footer ===== -->
+<footer class="footer">
+  <div class="container footer-content">
+    <div class="social-icons">
+      <a href="https://instagram.com/theflyingscot.nz" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+      <a href="https://facebook.com/profile.php?id=61590205208850" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+      <a href="https://tiktok.com/@theflyingscot.nz" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
+    </div>
+
+    <div class="contact-info">
+      <div><i class="fas fa-user" aria-hidden="true"></i> Leisa Sinclair —
+        <a href="mailto:admin@theflyingscot.co.nz">admin@theflyingscot.co.nz</a>
+        <a href="tel:+642102379049"><i class="fas fa-phone" aria-hidden="true"></i> 021 023 79049</a>
+      </div>
+      <div><i class="fas fa-user" aria-hidden="true"></i> Hannah Sinclair —
+        <a href="mailto:admin@theflyingscot.co.nz">admin@theflyingscot.co.nz</a>
+        <a href="tel:+64224689608"><i class="fas fa-phone" aria-hidden="true"></i> 022 468 9608</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container copyright">
+    &copy; 2026 The Flying SCOT — Scottish Food. Big Flavour. All rights reserved. · <a href="privacy.html">Privacy Policy</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // ----- Mobile nav toggle -----
+  const hamburger = document.getElementById('hamburgerBtn');
+  const navLinks = document.getElementById('navLinks');
+
+  function closeMenu() {
+    navLinks.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.querySelector('i').className = 'fas fa-bars';
+  }
+
+  hamburger.addEventListener('click', function () {
+    const open = navLinks.classList.toggle('active');
+    hamburger.setAttribute('aria-expanded', String(open));
+    hamburger.querySelector('i').className = open ? 'fas fa-times' : 'fas fa-bars';
+  });
+
+  navLinks.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', closeMenu);
+  });
+
+  // ----- Carousel: scroll-snap + button nudges (no transform maths) -----
+  const viewport = document.getElementById('carouselViewport');
+  const step = function () {
+    const card = viewport.querySelector('.carousel-card');
+    return card ? card.offsetWidth + 20 : 320;
+  };
+  document.getElementById('nextBtn').addEventListener('click', function () {
+    viewport.scrollBy({ left: step(), behavior: 'smooth' });
+  });
+  document.getElementById('prevBtn').addEventListener('click', function () {
+    viewport.scrollBy({ left: -step(), behavior: 'smooth' });
+  });
+
+  // ----- Shared helper: inline form status -----
+  function setStatus(el, message, ok) {
+    el.textContent = message;
+    el.className = 'form-status ' + (ok ? 'ok' : 'err');
+  }
+
+  // ----- Contact form -----
+  const contactForm = document.getElementById('sendMessageForm');
+  const contactStatus = document.getElementById('contactStatus');
+  const contactSubmit = document.getElementById('contactSubmit');
+
+  contactForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById('contactName').value.trim();
+    const email = document.getElementById('contactEmail').value.trim();
+    const message = document.getElementById('contactMessage').value.trim();
+    const website = document.getElementById('website').value; // honeypot
+
+    if (!name || !email || !message) {
+      setStatus(contactStatus, 'Please fill out all fields before sending.', false);
+      return;
+    }
+
+    contactSubmit.disabled = true;
+    setStatus(contactStatus, 'Sending…', true);
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, email: email, message: message, website: website })
+      });
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setStatus(contactStatus, "Thanks! Your message is on its way & we'll be in touch soon.", true);
+        contactForm.reset();
+      } else {
+        setStatus(contactStatus, result.error || 'Something went wrong. Please try again, or email us directly.', false);
+      }
+    } catch (err) {
+      setStatus(contactStatus, "Couldn't reach the server. Please try again shortly.", false);
+    } finally {
+      contactSubmit.disabled = false;
+    }
+  });
+
+  // ----- Newsletter form -----
+  const subForm = document.getElementById('subscribeForm');
+  const subStatus = document.getElementById('subStatus');
+  const subSubmit = document.getElementById('subSubmit');
+
+  subForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const emailInput = document.getElementById('subEmail');
+    const email = emailInput.value.trim();
+
+    if (!email) {
+      setStatus(subStatus, 'Please enter your email address.', false);
+      return;
+    }
+
+    subSubmit.disabled = true;
+    setStatus(subStatus, 'Subscribing…', true);
+
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email })
+      });
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setStatus(subStatus, "You're on the list, see you at our next event!", true);
+        emailInput.value = '';
+      } else {
+        setStatus(subStatus, result.error || 'Subscription failed. Please try again.', false);
+      }
+    } catch (err) {
+      setStatus(subStatus, "Couldn't reach the server. Please try again shortly.", false);
+    } finally {
+      subSubmit.disabled = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>
