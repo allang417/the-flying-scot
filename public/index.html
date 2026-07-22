@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="The Flying SCOT - authentic Scottish street food in Canterbury, NZ. Haggis breakfast rolls, gourmet pies, Scottish tablet and more. Scottish Food. Big Flavour.">
+  <meta name="description" content="The Flying SCOT — authentic Scottish street food in Canterbury, NZ. Haggis breakfast rolls, gourmet pies, Scottish tablet and more. Scottish Food. Big Flavour.">
   <title>The Flying SCOT | Scottish Street Food, Canterbury NZ</title>
 
   <!-- Social sharing preview -->
@@ -51,10 +51,10 @@
 <!-- ===== Hero ===== -->
 <section id="home" class="hero">
   <div class="container">
-    <img class="hero-logo" src="assets/logo.jpg" alt="The Flying SCOT - Scottish food truck illustration with tartan and thistle">
+    <img class="hero-logo" src="assets/logo.jpg" alt="The Flying SCOT — Scottish food truck illustration with tartan and thistle">
     <h1>The Flying <em>SCOT</em></h1>
     <p class="hero-tagline">Scottish Food<span class="dot">.</span> Big Flavour<span class="dot">.</span></p>
-    
+    <p class="hero-sub">Haggis breakfast rolls, gourmet pies and Scottish tablet — made with love (and a wee bit of attitude), served across Canterbury.</p>
   </div>
 </section>
 <div class="tartan" aria-hidden="true"></div>
@@ -65,9 +65,9 @@
     <span class="eyebrow">From the Highlands to the Port Hills</span>
     <h2 class="section-title">Our Story</h2>
     <div class="about-text">
-      <p><span class="about-highlight">The Flying SCOT</span> took off in the heart of Canterbury, blending traditional Scottish recipes with bold street food innovation. Born from a passion for honest, soulful cooking, we use only <strong>homemade haggis</strong> in our dishes - bringing haggis-inspired burgers, lorne sausage, tattie scones and many more soulful creations to the streets of Christchurch and Canterbury.</p>
-      <p>Every dish is crafted with locally sourced ingredients, sustainable produce, and a whole lot of Highland spirit. Soar above ordinary fast food - experience the true taste of modern Scotland.</p>
-      <p>From <strong>morning rolls</strong> stacked with haggis, black pudding, lorne sausage, tattie scones, eggs and bacon, to <strong>gourmet pies</strong>, <strong>Scottish tablet</strong> and more - come find us and see what's on offer!</p>
+      <p><span class="about-highlight">The Flying SCOT</span> took off in the heart of Canterbury, blending traditional Scottish recipes with bold street food innovation. Born from a passion for honest, soulful cooking, we use only <strong>homemade haggis</strong> in our dishes — bringing haggis-inspired burgers, lorne sausage, tattie scones and many more soulful creations to the streets of Christchurch and Canterbury.</p>
+      <p>Every dish is crafted with locally sourced ingredients, sustainable produce, and a whole lot of Highland spirit. Soar above ordinary fast food — experience the true taste of modern Scotland.</p>
+      <p>From <strong>morning rolls</strong> stacked with haggis, black pudding, lorne sausage, tattie scones, eggs and bacon, to <strong>gourmet pies</strong>, <strong>Scottish tablet</strong> and more — come find the truck and see what's on offer!</p>
     </div>
   </div>
 </section>
@@ -75,7 +75,7 @@
 <!-- ===== Creations ===== -->
 <section id="offers" class="offers-section">
   <div class="container">
-    
+    <span class="eyebrow">Fresh from the truck</span>
     <h2 class="section-title">Some of Our Creations</h2>
   </div>
 
@@ -157,6 +157,11 @@
         <div>
           <label for="contactMessage">Message</label>
           <textarea id="contactMessage" name="message" rows="5" placeholder="Tell us about your event or enquiry..." required></textarea>
+        </div>
+
+        <div class="consent-row">
+          <input type="checkbox" id="alsoSubscribe" name="alsoSubscribe">
+          <label for="alsoSubscribe">Also send me weekly locations &amp; specials</label>
         </div>
 
         <!-- Honeypot: bots fill this, humans never see it -->
@@ -268,6 +273,7 @@
     const email = document.getElementById('contactEmail').value.trim();
     const message = document.getElementById('contactMessage').value.trim();
     const website = document.getElementById('website').value; // honeypot
+    const alsoSubscribe = document.getElementById('alsoSubscribe').checked;
 
     if (!name || !email || !message) {
       setStatus(contactStatus, 'Please fill out all fields before sending.', false);
@@ -281,12 +287,12 @@
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name, email: email, message: message, website: website })
+        body: JSON.stringify({ name: name, email: email, message: message, website: website, alsoSubscribe: alsoSubscribe })
       });
       const result = await response.json();
 
       if (response.ok && result.success) {
-        setStatus(contactStatus, "Thanks! Your message is on its way & we'll be in touch soon.", true);
+        setStatus(contactStatus, "Thanks! Your message is on its way — we'll be in touch soon.", true);
         contactForm.reset();
       } else {
         setStatus(contactStatus, result.error || 'Something went wrong. Please try again, or email us directly.', false);
@@ -325,7 +331,7 @@
       const result = await response.json();
 
       if (response.ok && result.success) {
-        setStatus(subStatus, "You're on the list, see you at our next event!", true);
+        setStatus(subStatus, "You're on the list — see you at the truck!", true);
         emailInput.value = '';
       } else {
         setStatus(subStatus, result.error || 'Subscription failed. Please try again.', false);

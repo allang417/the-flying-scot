@@ -80,7 +80,7 @@ const isValidEmail = (email) =>
 // ---------- Contact form ----------
 app.post('/api/contact', async (req, res) => {
   try {
-    const { name, email, message, website } = req.body || {};
+    const { name, email, message, website, alsoSubscribe } = req.body || {};
 
     // Honeypot: real visitors never see this field. If it's filled, it's a bot.
     if (website) {
@@ -109,9 +109,26 @@ app.post('/api/contact', async (req, res) => {
         <p><strong>Email:</strong> ${safeEmail}</p>
         <p><strong>Message:</strong></p>
         <p style="white-space:pre-wrap;background:#efe4cc;padding:14px;border-radius:8px;">${safeMessage}</p>
-        <p style="font-size:13px;color:#888;">Hit Reply to answer ${safeName} directly.</p>
+        <p style="font-size:13px;color:#888;">Hit Reply to answer ${safeName} directly.${alsoSubscribe === true ? ' They also opted in to the newsletter.' : ''}</p>
       `)
     });
+
+    // If they ticked "also send me specials", add them to the audience too.
+    // Their name gets stored on the contact — so on the Resend Audience page,
+    // contacts WITH a name came from the contact form, email-only ones came
+    // from the newsletter box.
+    if (alsoSubscribe === true) {
+      try {
+        await resend.contacts.create({
+          email: email,
+          firstName: String(name).slice(0, 50),
+          unsubscribed: false
+        });
+      } catch (subErr) {
+        // Never let a list hiccup block the enquiry itself
+        console.error('Audience add failed (contact form):', subErr);
+      }
+    }
 
     // 2) A confirmation, to the customer
     await resend.emails.send({
