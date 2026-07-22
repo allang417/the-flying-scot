@@ -641,7 +641,7 @@ button[disabled] { opacity: 0.6; cursor: wait; }
 }
 .doc-page p { margin-bottom: 1rem; color: var(--ink-soft); }
 .doc-page a { color: var(--crimson); }
-
+.doc-page a.btn-primary { color: #fff; }
 /* ---------- 11. Responsive ---------- */
 @media (max-width: 860px) {
   .nav-links {
