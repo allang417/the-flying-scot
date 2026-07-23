@@ -88,6 +88,52 @@ img { max-width: 100%; display: block; }
       var(--navy) 52px 64px);
 }
 
+/* ---------- Grand Opening announcement bar ---------- */
+.announcement-bar {
+  background: linear-gradient(90deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+  color: #fff;
+  text-align: center;
+  padding: 14px 20px;
+}
+
+.announcement-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.announcement-content p {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.announcement-content strong {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+
+.announcement-link {
+  background: #fff;
+  color: var(--crimson);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 6px 16px;
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: transform 0.2s;
+}
+.announcement-link:hover { transform: translateY(-2px); }
+
+@media (max-width: 600px) {
+  .announcement-content { flex-direction: column; gap: 8px; }
+}
 /* ---------- 3. Navigation ---------- */
 .navbar {
   position: sticky;
