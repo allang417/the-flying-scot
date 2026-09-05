@@ -22,15 +22,12 @@ if (!process.env.RESEND_API_KEY) {
 const SITE_URL = process.env.SITE_URL || 'https://theflyingscot.co.nz';
 
 // ---------- Branded email template ----------
-// Wraps any message in The Flying SCOT colours. Email clients ignore most
-// modern CSS, so everything here is inline styles and tables — that's normal.
 function brandedEmail(title, bodyHtml) {
   return `
   <div style="margin:0;padding:0;background-color:#efe4cc;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#efe4cc;padding:24px 0;">
       <tr><td align="center">
         <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background-color:#ffffff;border-radius:14px;overflow:hidden;font-family:Arial,Helvetica,sans-serif;">
-          <!-- Navy header with logo -->
           <tr>
             <td align="center" style="background-color:#16233a;padding:26px 20px 18px;">
               <img src="${SITE_URL}/assets/logo.jpg" width="90" height="90" alt="The Flying SCOT" style="border-radius:50%;display:block;">
@@ -38,9 +35,7 @@ function brandedEmail(title, bodyHtml) {
               <p style="margin:4px 0 0;color:#f4ebd8;font-size:11px;letter-spacing:2px;text-transform:uppercase;">Scottish Food<span style="color:#b32025;">.</span> Big Flavour<span style="color:#b32025;">.</span></p>
             </td>
           </tr>
-          <!-- Tartan stripe -->
           <tr><td style="height:6px;background-color:#b32025;font-size:0;line-height:0;">&nbsp;</td></tr>
-          <!-- Body -->
           <tr>
             <td style="padding:28px 30px;">
               <h2 style="margin:0 0 14px;color:#16233a;font-size:20px;">${title}</h2>
@@ -49,7 +44,6 @@ function brandedEmail(title, bodyHtml) {
               </div>
             </td>
           </tr>
-          <!-- Footer -->
           <tr>
             <td style="background-color:#0d1626;padding:18px 30px;text-align:center;">
               <p style="margin:0;color:#f4ebd8;font-size:12px;opacity:0.85;">
@@ -64,7 +58,6 @@ function brandedEmail(title, bodyHtml) {
   </div>`;
 }
 
-// Escapes user input before it goes into email HTML
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, '&amp;')
@@ -77,12 +70,14 @@ function escapeHtml(str) {
 const isValidEmail = (email) =>
   typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 254;
 
+const PACK_PRICE = 16;
+const VALID_PRODUCTS = ['Haggis', 'Lorne Sausage', 'Tattie Scones', 'Black Pudding'];
+
 // ---------- Contact form ----------
 app.post('/api/contact', async (req, res) => {
   try {
     const { name, email, message, website, alsoSubscribe } = req.body || {};
 
-    // Honeypot: real visitors never see this field. If it's filled, it's a bot.
     if (website) {
       return res.json({ success: true });
     }
@@ -98,7 +93,18 @@ app.post('/api/contact', async (req, res) => {
     const safeEmail = escapeHtml(email);
     const safeMessage = escapeHtml(message);
 
-    // 1) The enquiry, to Leisa & Hannah — reply goes straight to the customer
+    if (alsoSubscribe === true) {
+      try {
+        await resend.contacts.create({
+          email: email,
+          firstName: String(name).slice(0, 50),
+          unsubscribed: false
+        });
+      } catch (subErr) {
+        console.error('Audience add failed (contact form):', subErr);
+      }
+    }
+
     await resend.emails.send({
       from: 'Website Enquiry <info@theflyingscot.co.nz>',
       to: 'admin@theflyingscot.co.nz',
@@ -113,24 +119,6 @@ app.post('/api/contact', async (req, res) => {
       `)
     });
 
-    // If they ticked "also send me specials", add them to the audience too.
-    // Their name gets stored on the contact — so on the Resend Audience page,
-    // contacts WITH a name came from the contact form, email-only ones came
-    // from the newsletter box.
-    if (alsoSubscribe === true) {
-      try {
-        await resend.contacts.create({
-          email: email,
-          firstName: String(name).slice(0, 50),
-          unsubscribed: false
-        });
-      } catch (subErr) {
-        // Never let a list hiccup block the enquiry itself
-        console.error('Audience add failed (contact form):', subErr);
-      }
-    }
-
-    // 2) A confirmation, to the customer
     await resend.emails.send({
       from: 'The Flying SCOT <info@theflyingscot.co.nz>',
       to: email,
@@ -158,16 +146,12 @@ app.post('/api/subscribe', async (req, res) => {
       return res.status(400).json({ success: false, error: 'Please enter a valid email address.' });
     }
 
-    // 1) Add them to the Resend Audience (your growing subscriber list).
-    //    Adding the same email twice is fine — Resend won't duplicate it.
     // Adds them to your account's built-in Resend audience.
-    // Adding the same email twice is fine — Resend won't duplicate it.
     await resend.contacts.create({
       email: email,
       unsubscribed: false
     });
 
-    // 2) Welcome email to the new subscriber
     await resend.emails.send({
       from: 'The Flying SCOT <newsletter@theflyingscot.co.nz>',
       to: email,
@@ -179,7 +163,6 @@ app.post('/api/subscribe', async (req, res) => {
       `)
     });
 
-    // 3) A heads-up to your inbox
     await resend.emails.send({
       from: 'Newsletter Signup <newsletter@theflyingscot.co.nz>',
       to: 'admin@theflyingscot.co.nz',
@@ -191,6 +174,86 @@ app.post('/api/subscribe', async (req, res) => {
   } catch (err) {
     console.error('Subscribe error:', err);
     res.status(500).json({ success: false, error: 'Subscription failed. Please try again.' });
+  }
+});
+
+// ---------- Pack orders ----------
+app.post('/api/order', async (req, res) => {
+  try {
+    const { items, fulfilment, address, name, email, phone, notes, website } = req.body || {};
+
+    if (website) {
+      return res.json({ success: true });
+    }
+
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ success: false, error: 'Please choose at least one pack.' });
+    }
+    if (!name || !phone || !isValidEmail(email)) {
+      return res.status(400).json({ success: false, error: 'Please provide a valid name, email, and phone number.' });
+    }
+    if (fulfilment !== 'pickup' && fulfilment !== 'delivery') {
+      return res.status(400).json({ success: false, error: 'Please choose pickup or delivery.' });
+    }
+    if (fulfilment === 'delivery' && !address) {
+      return res.status(400).json({ success: false, error: 'Please provide a delivery address.' });
+    }
+
+    // Validate and price each item ourselves — never trust a client-sent total
+    let total = 0;
+    const lineItemsHtml = [];
+    for (const item of items) {
+      const productName = String((item && item.product) || '').slice(0, 50);
+      const quantity = Number(item && item.quantity);
+      if (!VALID_PRODUCTS.includes(productName) || !Number.isInteger(quantity) || quantity < 1 || quantity > 20) {
+        return res.status(400).json({ success: false, error: 'Invalid order item.' });
+      }
+      const lineTotal = quantity * PACK_PRICE;
+      total += lineTotal;
+      lineItemsHtml.push(`<li>${quantity} × ${escapeHtml(productName)} — $${lineTotal}</li>`);
+    }
+
+    const safeName = escapeHtml(name);
+    const safeAddress = escapeHtml(String(address || '').slice(0, 300));
+    const safeNotes = escapeHtml(String(notes || '').slice(0, 1000));
+    const fulfilmentText = fulfilment === 'pickup'
+      ? 'Pickup — Fridays at The Arts Centre'
+      : `Delivery — ${safeAddress}`;
+
+    await resend.emails.send({
+      from: 'Website Order <info@theflyingscot.co.nz>',
+      to: 'admin@theflyingscot.co.nz',
+      replyTo: email,
+      subject: `New pack order from ${safeName} — $${total}`,
+      html: brandedEmail('New pack order received', `
+        <ul style="padding-left:18px;">${lineItemsHtml.join('')}</ul>
+        <p><strong>Total: $${total}</strong> (cash/EFTPOS on ${fulfilment})</p>
+        <p><strong>Fulfilment:</strong> ${fulfilmentText}</p>
+        <p><strong>Name:</strong> ${safeName}</p>
+        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+        <p><strong>Phone:</strong> ${escapeHtml(phone)}</p>
+        ${safeNotes ? `<p><strong>Notes:</strong> ${safeNotes}</p>` : ''}
+      `)
+    });
+
+    await resend.emails.send({
+      from: 'The Flying SCOT <info@theflyingscot.co.nz>',
+      to: email,
+      subject: 'Order received! — The Flying SCOT',
+      html: brandedEmail(`Thanks, ${safeName}!`, `
+        <p>We've got your order for:</p>
+        <ul style="padding-left:18px;">${lineItemsHtml.join('')}</ul>
+        <p><strong>Total: $${total}</strong> — payable by cash or EFTPOS on ${fulfilment}.</p>
+        <p><strong>${fulfilmentText}</strong></p>
+        <p>We'll be in touch shortly to confirm the details.</p>
+        <p>Cheers,<br><strong>Leisa &amp; Hannah</strong><br>The Flying SCOT</p>
+      `)
+    });
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Order error:', err);
+    res.status(500).json({ success: false, error: 'Something went wrong placing your order. Please try again or contact us directly.' });
   }
 });
 
