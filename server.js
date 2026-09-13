@@ -224,7 +224,7 @@ app.post('/api/order', async (req, res) => {
     const safeAddress = escapeHtml(String(address || '').slice(0, 300));
     const safeNotes = escapeHtml(String(notes || '').slice(0, 1000));
     const fulfilmentText = fulfilment === 'pickup'
-      ? 'Pickup — Fridays at The Arts Centre'
+      ? 'Pickup — Fridays at The Arts Centre "Te Matatiki Toi Ora"'
       : `Delivery — ${safeAddress}`;
 
     await resend.emails.send({
