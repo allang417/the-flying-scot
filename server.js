@@ -70,8 +70,14 @@ function escapeHtml(str) {
 const isValidEmail = (email) =>
   typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 254;
 
-const PACK_PRICE = 16;
-const VALID_PRODUCTS = ['Haggis', 'Lorne Sausage', 'Tattie Scones', 'Black Pudding'];
+const PRODUCT_PRICES = {
+  'Haggis': 16,
+  'Lorne Sausage': 16,
+  'Tattie Scones': 16,
+  'Black Pudding': 16,
+  'Irn Bru': 4.50,
+  'Scotch Roll': 2
+};
 
 // ---------- Contact form ----------
 app.post('/api/contact', async (req, res) => {
@@ -205,12 +211,13 @@ app.post('/api/order', async (req, res) => {
     for (const item of items) {
       const productName = String((item && item.product) || '').slice(0, 50);
       const quantity = Number(item && item.quantity);
-      if (!VALID_PRODUCTS.includes(productName) || !Number.isInteger(quantity) || quantity < 1 || quantity > 20) {
+      const price = PRODUCT_PRICES[productName];
+      if (price === undefined || !Number.isInteger(quantity) || quantity < 1 || quantity > 20) {
         return res.status(400).json({ success: false, error: 'Invalid order item.' });
       }
-      const lineTotal = quantity * PACK_PRICE;
+      const lineTotal = quantity * price;
       total += lineTotal;
-      lineItemsHtml.push(`<li>${quantity} × ${escapeHtml(productName)} — $${lineTotal}</li>`);
+      lineItemsHtml.push(`<li>${quantity} × ${escapeHtml(productName)} — $${lineTotal.toFixed(2)}</li>`);
     }
 
     const safeName = escapeHtml(name);
@@ -224,10 +231,10 @@ app.post('/api/order', async (req, res) => {
       from: 'Website Order <info@theflyingscot.co.nz>',
       to: 'admin@theflyingscot.co.nz',
       replyTo: email,
-      subject: `New pack order from ${safeName} — $${total}`,
+      subject: `New pack order from ${safeName} — $${total.toFixed(2)}`,
       html: brandedEmail('New pack order received', `
         <ul style="padding-left:18px;">${lineItemsHtml.join('')}</ul>
-        <p><strong>Total: $${total}</strong> (cash/EFTPOS on ${fulfilment})</p>
+        <p><strong>Total: $${total.toFixed(2)}</strong> (cash/EFTPOS on ${fulfilment})</p>
         <p><strong>Fulfilment:</strong> ${fulfilmentText}</p>
         <p><strong>Name:</strong> ${safeName}</p>
         <p><strong>Email:</strong> ${escapeHtml(email)}</p>
@@ -243,7 +250,7 @@ app.post('/api/order', async (req, res) => {
       html: brandedEmail(`Thanks, ${safeName}!`, `
         <p>We've got your order for:</p>
         <ul style="padding-left:18px;">${lineItemsHtml.join('')}</ul>
-        <p><strong>Total: $${total}</strong> — payable by cash or EFTPOS on ${fulfilment}.</p>
+        <p><strong>Total: $${total.toFixed(2)}</strong> — payable by cash or EFTPOS on ${fulfilment}.</p>
         <p><strong>${fulfilmentText}</strong></p>
         <p>We'll be in touch shortly to confirm the details.</p>
         <p>Cheers,<br><strong>Leisa &amp; Hannah</strong><br>The Flying SCOT</p>
