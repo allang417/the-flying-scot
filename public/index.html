@@ -120,7 +120,7 @@
   <div class="container">
     <span class="eyebrow">Take it home</span>
     <h2 class="section-title">Order Packs</h2>
-    <p class="order-intro">Stock up on our homemade favourites — 4 x serves, $16 each. Delivered around Christchurch, or ready for pickup at The Arts Centre on Fridays.</p>
+    <p class="order-intro">Stock up on our homemade favourites — packs of 4, $16 each. Delivered around Christchurch, or ready for pickup at The Arts Centre on Fridays.</p>
 
     <form class="order-form" id="orderForm" novalidate>
       <div class="order-products">
@@ -128,7 +128,7 @@
         <div class="order-product">
           <div class="order-product-info">
             <span class="order-product-name">Haggis</span>
-            <span class="order-product-price">$16 / 4 serves</span>
+            <span class="order-product-price">$16 / pack of 4</span>
           </div>
           <div class="qty-control">
             <button type="button" class="qty-btn" data-product="haggis" data-action="decrease" aria-label="Decrease Haggis quantity">&minus;</button>
@@ -140,7 +140,7 @@
         <div class="order-product">
           <div class="order-product-info">
             <span class="order-product-name">Lorne Sausage</span>
-            <span class="order-product-price">$16 / 4 serves</span>
+            <span class="order-product-price">$16 / pack of 4</span>
           </div>
           <div class="qty-control">
             <button type="button" class="qty-btn" data-product="lorneSausage" data-action="decrease" aria-label="Decrease Lorne Sausage quantity">&minus;</button>
@@ -152,7 +152,7 @@
         <div class="order-product">
           <div class="order-product-info">
             <span class="order-product-name">Tattie Scones</span>
-            <span class="order-product-price">$16 / 4 serves</span>
+            <span class="order-product-price">$16 / pack of 4</span>
           </div>
           <div class="qty-control">
             <button type="button" class="qty-btn" data-product="tattieScones" data-action="decrease" aria-label="Decrease Tattie Scones quantity">&minus;</button>
@@ -164,12 +164,36 @@
         <div class="order-product">
           <div class="order-product-info">
             <span class="order-product-name">Black Pudding</span>
-            <span class="order-product-price">$16 / 4 serves</span>
+            <span class="order-product-price">$16 / pack of 4</span>
           </div>
           <div class="qty-control">
             <button type="button" class="qty-btn" data-product="blackPudding" data-action="decrease" aria-label="Decrease Black Pudding quantity">&minus;</button>
             <input type="number" class="qty-input" id="qty-blackPudding" data-product="blackPudding" data-price="16" data-label="Black Pudding" value="0" min="0" max="20" readonly>
             <button type="button" class="qty-btn" data-product="blackPudding" data-action="increase" aria-label="Increase Black Pudding quantity">&plus;</button>
+          </div>
+        </div>
+
+        <div class="order-product">
+          <div class="order-product-info">
+            <span class="order-product-name">Irn Bru</span>
+            <span class="order-product-price">$4.50 each</span>
+          </div>
+          <div class="qty-control">
+            <button type="button" class="qty-btn" data-product="irnBru" data-action="decrease" aria-label="Decrease Irn Bru quantity">&minus;</button>
+            <input type="number" class="qty-input" id="qty-irnBru" data-product="irnBru" data-price="4.50" data-label="Irn Bru" value="0" min="0" max="20" readonly>
+            <button type="button" class="qty-btn" data-product="irnBru" data-action="increase" aria-label="Increase Irn Bru quantity">&plus;</button>
+          </div>
+        </div>
+
+        <div class="order-product">
+          <div class="order-product-info">
+            <span class="order-product-name">Scotch Roll</span>
+            <span class="order-product-price">$2 each</span>
+          </div>
+          <div class="qty-control">
+            <button type="button" class="qty-btn" data-product="scotchRoll" data-action="decrease" aria-label="Decrease Scotch Roll quantity">&minus;</button>
+            <input type="number" class="qty-input" id="qty-scotchRoll" data-product="scotchRoll" data-price="2" data-label="Scotch Roll" value="0" min="0" max="20" readonly>
+            <button type="button" class="qty-btn" data-product="scotchRoll" data-action="increase" aria-label="Increase Scotch Roll quantity">&plus;</button>
           </div>
         </div>
 
@@ -186,7 +210,7 @@
           <input type="radio" name="fulfilment" value="pickup" checked> Pickup — Fridays at The Arts Centre
         </label>
         <label class="radio-row">
-          <input type="radio" name="fulfilment" value="delivery"> Delivery — within Christchurch on your chosen day!!
+          <input type="radio" name="fulfilment" value="delivery"> Delivery — within Christchurch
         </label>
       </fieldset>
 
@@ -477,7 +501,7 @@
       qtyInputs.forEach(function (input) {
         total += Number(input.value) * Number(input.dataset.price);
       });
-      orderTotalEl.textContent = '$' + total;
+      orderTotalEl.textContent = '$' + total.toFixed(2);
     }
 
     orderForm.querySelectorAll('.qty-btn').forEach(function (btn) {
