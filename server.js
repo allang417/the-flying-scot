@@ -70,6 +70,9 @@ function escapeHtml(str) {
 const isValidEmail = (email) =>
   typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 254;
 
+const has = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+
+// ---------- Order settings (edit prices, stock and fees here) ----------
 const PRODUCT_PRICES = {
   'Haggis': 16,
   'Lorne Sausage': 16,
@@ -77,6 +80,16 @@ const PRODUCT_PRICES = {
   'Black Pudding': 16,
   'Irn Bru': 4.50,
   'Scotch Roll': 2
+};
+
+// Anything listed here is rejected at checkout. Remove the name when it's back in stock.
+const OUT_OF_STOCK = ['Irn Bru'];
+
+// The three ways a customer can get their order
+const FULFILMENT_OPTIONS = {
+  'pickup-arts-centre': { label: 'Pickup — Fridays at The Arts Centre Te Matatiki Toi Ora', fee: 0, payOn: 'pickup' },
+  'pickup-riccarton':   { label: 'Pickup — Sundays at Riccarton Markets', fee: 0, payOn: 'pickup' },
+  'delivery':           { label: 'Delivery', fee: 5, payOn: 'delivery' }
 };
 
 // ---------- Contact form ----------
@@ -183,7 +196,7 @@ app.post('/api/subscribe', async (req, res) => {
   }
 });
 
-// ---------- Pack orders ----------
+// ---------- Orders ----------
 app.post('/api/order', async (req, res) => {
   try {
     const { items, fulfilment, address, name, email, phone, notes, website } = req.body || {};
@@ -193,48 +206,61 @@ app.post('/api/order', async (req, res) => {
     }
 
     if (!Array.isArray(items) || items.length === 0) {
-      return res.status(400).json({ success: false, error: 'Please choose at least one pack.' });
+      return res.status(400).json({ success: false, error: 'Please choose at least one item.' });
     }
     if (!name || !phone || !isValidEmail(email)) {
       return res.status(400).json({ success: false, error: 'Please provide a valid name, email, and phone number.' });
     }
-    if (fulfilment !== 'pickup' && fulfilment !== 'delivery') {
-      return res.status(400).json({ success: false, error: 'Please choose pickup or delivery.' });
+    if (typeof fulfilment !== 'string' || !has(FULFILMENT_OPTIONS, fulfilment)) {
+      return res.status(400).json({ success: false, error: 'Please choose a pickup or delivery option.' });
     }
     if (fulfilment === 'delivery' && !address) {
       return res.status(400).json({ success: false, error: 'Please provide a delivery address.' });
     }
 
+    const option = FULFILMENT_OPTIONS[fulfilment];
+
     // Validate and price each item ourselves — never trust a client-sent total
-    let total = 0;
+    let itemsTotal = 0;
     const lineItemsHtml = [];
     for (const item of items) {
       const productName = String((item && item.product) || '').slice(0, 50);
       const quantity = Number(item && item.quantity);
-      const price = PRODUCT_PRICES[productName];
-      if (price === undefined || !Number.isInteger(quantity) || quantity < 1 || quantity > 20) {
+
+      if (!has(PRODUCT_PRICES, productName) || !Number.isInteger(quantity) || quantity < 1 || quantity > 20) {
         return res.status(400).json({ success: false, error: 'Invalid order item.' });
       }
-      const lineTotal = quantity * price;
-      total += lineTotal;
+      if (OUT_OF_STOCK.includes(productName)) {
+        return res.status(400).json({ success: false, error: `Sorry, ${productName} is currently out of stock.` });
+      }
+
+      const lineTotal = quantity * PRODUCT_PRICES[productName];
+      itemsTotal += lineTotal;
       lineItemsHtml.push(`<li>${quantity} × ${escapeHtml(productName)} — $${lineTotal.toFixed(2)}</li>`);
     }
+
+    const deliveryFee = option.fee;
+    const grandTotal = itemsTotal + deliveryFee;
 
     const safeName = escapeHtml(name);
     const safeAddress = escapeHtml(String(address || '').slice(0, 300));
     const safeNotes = escapeHtml(String(notes || '').slice(0, 1000));
-    const fulfilmentText = fulfilment === 'pickup'
-      ? 'Pickup — Fridays at The Arts Centre "Te Matatiki Toi Ora"'
-      : `Delivery — ${safeAddress}`;
+    const fulfilmentText = fulfilment === 'delivery'
+      ? `Delivery — ${safeAddress}`
+      : option.label;
+    const feeHtml = deliveryFee > 0
+      ? `<p>Delivery fee: $${deliveryFee.toFixed(2)}</p>`
+      : '';
 
     await resend.emails.send({
       from: 'Website Order <info@theflyingscot.co.nz>',
       to: 'admin@theflyingscot.co.nz',
       replyTo: email,
-      subject: `New pack order from ${safeName} — $${total.toFixed(2)}`,
+      subject: `New pack order from ${safeName} — $${grandTotal.toFixed(2)}`,
       html: brandedEmail('New pack order received', `
         <ul style="padding-left:18px;">${lineItemsHtml.join('')}</ul>
-        <p><strong>Total: $${total.toFixed(2)}</strong> (cash/EFTPOS on ${fulfilment})</p>
+        ${feeHtml}
+        <p><strong>Total: $${grandTotal.toFixed(2)}</strong> (cash/EFTPOS on ${option.payOn})</p>
         <p><strong>Fulfilment:</strong> ${fulfilmentText}</p>
         <p><strong>Name:</strong> ${safeName}</p>
         <p><strong>Email:</strong> ${escapeHtml(email)}</p>
@@ -250,7 +276,8 @@ app.post('/api/order', async (req, res) => {
       html: brandedEmail(`Thanks, ${safeName}!`, `
         <p>We've got your order for:</p>
         <ul style="padding-left:18px;">${lineItemsHtml.join('')}</ul>
-        <p><strong>Total: $${total.toFixed(2)}</strong> — payable by cash or EFTPOS on ${fulfilment}.</p>
+        ${feeHtml}
+        <p><strong>Total: $${grandTotal.toFixed(2)}</strong> — payable by cash or EFTPOS on ${option.payOn}.</p>
         <p><strong>${fulfilmentText}</strong></p>
         <p>We'll be in touch shortly to confirm the details.</p>
         <p>Cheers,<br><strong>Leisa &amp; Hannah</strong><br>The Flying SCOT</p>
