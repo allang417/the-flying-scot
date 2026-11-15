@@ -438,6 +438,37 @@ section { padding: 4.5rem 0; }
   color: var(--ink);
 }
 
+/* Out-of-stock items: greyed out, buttons locked, red badge next to the name */
+.order-product.sold-out .order-product-name,
+.order-product.sold-out .order-product-price { color: var(--ink-soft); }
+.order-product.sold-out .qty-control { opacity: 0.5; }
+
+.stock-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--crimson);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.qty-btn:disabled { cursor: not-allowed; }
+.qty-btn:disabled:hover { background: #fff; color: var(--navy); }
+
+.order-fee {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.2rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
 .order-total {
   display: flex;
   justify-content: space-between;
@@ -454,7 +485,7 @@ section { padding: 4.5rem 0; }
 .fulfilment-fieldset { border: 1px solid var(--line); border-radius: 14px; padding: 1rem 1.2rem; }
 .fulfilment-fieldset legend { font-weight: 700; color: var(--navy); font-size: 0.92rem; padding: 0 6px; }
 .radio-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-weight: 500; color: var(--ink-soft); cursor: pointer; }
-.radio-row input[type="radio"] { width: 18px; height: 18px; accent-color: var(--crimson); cursor: pointer; }
+.radio-row input[type="radio"] { width: 18px; height: 18px; accent-color: var(--crimson); cursor: pointer; flex-shrink: 0; }
 
 .order-payment-note { font-size: 0.88rem; color: var(--ink-soft); text-align: center; }
 .order-payment-note i { color: var(--crimson); margin-right: 4px; }

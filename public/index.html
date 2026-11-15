@@ -91,7 +91,7 @@
     <button class="carousel-btn next-btn" id="nextBtn" aria-label="Next creations">&rsaquo;</button>
 
     <div class="carousel-viewport" id="carouselViewport" tabindex="0" aria-label="Food creations carousel">
-            <div class="carousel-card">
+      <div class="carousel-card">
         <img src="https://placehold.co/500x400/16233a/f4ebd8?text=Breakfast+Rolls" alt="Breakfast rolls" loading="lazy">
         <h3>Breakfast Rolls</h3>
       </div>
@@ -129,7 +129,7 @@
   <div class="container">
     <span class="eyebrow">Take it home</span>
     <h2 class="section-title">Order Packs</h2>
-    <p class="order-intro">Stock up on our homemade favourites — savoury packs of 4 for $16, plus Irn Bru and Scotch Rolls sold individually. Delivered around Christchurch, or ready for pickup at The Arts Centre "Te Matatiki Toi Ora" on Fridays.</p>
+    <p class="order-intro">Stock up on our homemade favourites — savoury packs of 4 for $16, plus Irn Bru and Scotch Rolls sold individually. Delivered around Christchurch for $5, or pick up from The Arts Centre Te Matatiki Toi Ora on Fridays or Riccarton Markets on Sundays.</p>
 
     <form class="order-form" id="orderForm" novalidate>
       <div class="order-products">
@@ -182,15 +182,19 @@
           </div>
         </div>
 
-        <div class="order-product">
+        <!-- IRN BRU IS OUT OF STOCK.
+             When it's back: remove "sold-out" from the class below, delete the stock-badge span,
+             delete the two "disabled" attributes on its buttons, and remove 'Irn Bru' from
+             OUT_OF_STOCK in server.js. -->
+        <div class="order-product sold-out">
           <div class="order-product-info">
-            <span class="order-product-name">Irn Bru</span>
+            <span class="order-product-name">Irn Bru <span class="stock-badge">Out of stock</span></span>
             <span class="order-product-price">$4.50 each</span>
           </div>
           <div class="qty-control">
-            <button type="button" class="qty-btn" data-product="irnBru" data-action="decrease" aria-label="Decrease Irn Bru quantity">&minus;</button>
+            <button type="button" class="qty-btn" data-product="irnBru" data-action="decrease" aria-label="Decrease Irn Bru quantity" disabled>&minus;</button>
             <input type="number" class="qty-input" id="qty-irnBru" data-product="irnBru" data-price="4.50" data-label="Irn Bru" value="0" min="0" max="20" readonly>
-            <button type="button" class="qty-btn" data-product="irnBru" data-action="increase" aria-label="Increase Irn Bru quantity">&plus;</button>
+            <button type="button" class="qty-btn" data-product="irnBru" data-action="increase" aria-label="Increase Irn Bru quantity" disabled>&plus;</button>
           </div>
         </div>
 
@@ -208,18 +212,26 @@
 
       </div>
 
+      <div class="order-fee" id="orderFeeRow" style="display:none;">
+        <span>Delivery fee</span>
+        <span id="orderFeeAmount">$5.00</span>
+      </div>
+
       <div class="order-total">
         <span>Total</span>
-        <span id="orderTotal">$0</span>
+        <span id="orderTotal">$0.00</span>
       </div>
 
       <fieldset class="fulfilment-fieldset">
         <legend>How would you like your order?</legend>
         <label class="radio-row">
-          <input type="radio" name="fulfilment" value="pickup" checked> Pickup — Fridays at The Arts Centre "Te Matatiki Toi Ora"
+          <input type="radio" name="fulfilment" value="pickup-arts-centre" data-fee="0" checked> Pickup — Fridays at The Arts Centre Te Matatiki Toi Ora
         </label>
         <label class="radio-row">
-          <input type="radio" name="fulfilment" value="delivery"> Delivery — within Christchurch
+          <input type="radio" name="fulfilment" value="pickup-riccarton" data-fee="0"> Pickup — Sundays at Riccarton Markets
+        </label>
+        <label class="radio-row">
+          <input type="radio" name="fulfilment" value="delivery" data-fee="5"> Delivery within Christchurch — $5
         </label>
       </fieldset>
 
@@ -273,9 +285,9 @@
       <div class="day-column"><span class="day-name">Tue</span><span class="day-hours">Closed</span></div>
       <div class="day-column"><span class="day-name">Wed</span><span class="day-hours">Closed</span></div>
       <div class="day-column"><span class="day-name">Thu</span><span class="day-hours">Closed</span></div>
-      <div class="day-column open"><span class="day-name">Fri</span><span class="day-hours">5:00–9:30PM<br>The Arts Centre "Te Matatiki Toi Ora"</span></div>
+      <div class="day-column open"><span class="day-name">Fri</span><span class="day-hours">5:00–9:30PM<br>The Arts Centre Te Matatiki Toi Ora</span></div>
       <div class="day-column"><span class="day-name">Sat</span><span class="day-hours">Closed</span></div>
-      <div class="day-column"><span class="day-name">Sun</span><span class="day-hours">Closed</span></div>
+      <div class="day-column open"><span class="day-name">Sun</span><span class="day-hours">9:00AM–2:00PM<br>Riccarton Markets</span></div>
     </div>
 
     <p class="social-notice">Check our socials for pop-up locations &amp; specials</p>
@@ -495,22 +507,45 @@
     }
   });
 
-  // ----- Order form: quantities, live total, delivery toggle -----
+  // ----- Order form: quantities, live total, delivery fee & address toggle -----
   const orderForm = document.getElementById('orderForm');
   if (orderForm) {
     const qtyInputs = orderForm.querySelectorAll('.qty-input');
     const orderTotalEl = document.getElementById('orderTotal');
+    const feeRow = document.getElementById('orderFeeRow');
+    const feeAmountEl = document.getElementById('orderFeeAmount');
     const deliveryGroup = document.getElementById('deliveryAddressGroup');
     const orderAddress = document.getElementById('orderAddress');
     const orderStatus = document.getElementById('orderStatus');
     const orderSubmit = document.getElementById('orderSubmit');
 
+    function selectedFulfilment() {
+      return orderForm.querySelector('input[name="fulfilment"]:checked');
+    }
+
+    // Items total, plus the delivery fee once something is in the basket
     function updateTotal() {
       let total = 0;
       qtyInputs.forEach(function (input) {
         total += Number(input.value) * Number(input.dataset.price);
       });
-      orderTotalEl.textContent = '$' + total.toFixed(2);
+
+      const selected = selectedFulfilment();
+      const fee = (total > 0 && selected) ? Number(selected.dataset.fee || 0) : 0;
+
+      if (fee > 0) {
+        feeAmountEl.textContent = '$' + fee.toFixed(2);
+        feeRow.style.display = 'flex';
+      } else {
+        feeRow.style.display = 'none';
+      }
+      orderTotalEl.textContent = '$' + (total + fee).toFixed(2);
+    }
+
+    function refreshFulfilment() {
+      const selected = selectedFulfilment();
+      deliveryGroup.style.display = (selected && selected.value === 'delivery') ? 'block' : 'none';
+      updateTotal();
     }
 
     orderForm.querySelectorAll('.qty-btn').forEach(function (btn) {
@@ -528,9 +563,7 @@
     });
 
     orderForm.querySelectorAll('input[name="fulfilment"]').forEach(function (radio) {
-      radio.addEventListener('change', function () {
-        deliveryGroup.style.display = (radio.value === 'delivery' && radio.checked) ? 'block' : 'none';
-      });
+      radio.addEventListener('change', refreshFulfilment);
     });
 
     orderForm.addEventListener('submit', async function (e) {
@@ -544,7 +577,7 @@
         }
       });
 
-      const fulfilment = orderForm.querySelector('input[name="fulfilment"]:checked').value;
+      const fulfilment = selectedFulfilment().value;
       const address = orderAddress.value.trim();
       const name = document.getElementById('orderName').value.trim();
       const email = document.getElementById('orderEmail').value.trim();
@@ -553,7 +586,7 @@
       const website = document.getElementById('orderWebsite').value; // honeypot
 
       if (items.length === 0) {
-        setStatus(orderStatus, 'Please choose at least one pack before ordering.', false);
+        setStatus(orderStatus, 'Please choose at least one item before ordering.', false);
         return;
       }
       if (!name || !email || !phone) {
@@ -580,8 +613,7 @@
           setStatus(orderStatus, "Thanks! Your order is in — we'll be in touch to confirm.", true);
           orderForm.reset();
           qtyInputs.forEach(function (input) { input.value = 0; });
-          updateTotal();
-          deliveryGroup.style.display = 'none';
+          refreshFulfilment();
         } else {
           setStatus(orderStatus, result.error || 'Something went wrong. Please try again.', false);
         }
